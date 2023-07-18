@@ -3,7 +3,7 @@ name: alias-tag
 on:
   workflow_call:
     inputs:
-      version:
+      name:
         description: tag name to use
         required: true
         type: string
