@@ -1,26 +1,55 @@
-name: template-sync
+name: template sync
 
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      repository_default_branch:
+        description: The default/main branch of the repository
+        default: master
+        required: false
+        type: string
+
+      repository_is_template:
+        description: Flag indicating if the repository is a template
+        default: master
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
-  metadata:
-    uses: ahmadnassri/actions/.github/workflows/metadata.yml@master
+  dry-run:
+    # only run on pull_request events
+    if: ${{ github.event_name == 'pull_request_target' }}
 
-  template-sync:
-    needs: metadata
-
-    timeout-minutes: 20
+    timeout-minutes: 5
 
     runs-on: ubuntu-latest
-
-    # only run for templates
-    if: ${{ needs.metadata.outputs.repository_is_template == 'true' }}
 
     steps:
       - uses: actions/checkout@v3.5.3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-
       - uses: ahmadnassri/action-template-repository-sync@v2.3.4
         with:
           github-token: ${{ secrets.GH_TOKEN }}
+
+  sync:
+    # only run on main branch on push events
+    if: |
+      github.event_name == 'push' &&
+      inputs.repository_is_template == 'true' &&
+      inputs.repository_default_branch == github.ref_name
+
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+      - uses: ahmadnassri/action-template-repository-sync@v2.3.4
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+
