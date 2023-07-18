@@ -1,4 +1,4 @@
-name: commit-lint
+name: lint-commits
 
 on: workflow_call
 

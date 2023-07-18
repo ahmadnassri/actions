@@ -1,0 +1,39 @@
+name: auto-merge
+
+on: workflow_call
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  auto-merge:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    # only run for dependabot PRs
+    if: ${{ github.actor == 'dependabot[bot]' }}
+
+    steps:
+      - id: dependabot
+        uses: dependabot/fetch-metadata@v1.6.0
+        with:
+          github-token: ${{ github.token }}
+
+      - name: auto merge conditions
+        id: auto-merge
+        if: |
+          contains('version-update:semver-minor,version-update:semver-patch', steps.dependabot.outputs.update-type) &&
+          contains('direct:development,indirect:development,direct:production,indirect:production', steps.dependabot.outputs.dependency-type)
+
+        run: echo "::notice ::auto-merge conditions satisfied"
+
+      - name: auto approve pr
+        if: ${{ steps.auto-merge.conclusion == 'success' }}
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr merge --auto --rebase "$PR_URL"

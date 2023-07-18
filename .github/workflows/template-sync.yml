@@ -1,0 +1,26 @@
+name: template-sync
+
+on: workflow_call
+
+jobs:
+  metadata:
+    uses: ahmadnassri/actions/.github/workflows/metadata.yml@master
+
+  template-sync:
+    needs: metadata
+
+    timeout-minutes: 20
+
+    runs-on: ubuntu-latest
+
+    # only run for templates
+    if: ${{ needs.metadata.outputs.repository_is_template == 'true' }}
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - uses: ahmadnassri/action-template-repository-sync@v2.3.4
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
