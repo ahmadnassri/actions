@@ -1,0 +1,26 @@
+name: alias-tag
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: tag name to use
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  alias-tag:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const tag = 'tags/${{ inputs.name }}'
+            await github.rest.git.deleteRef({ ...context.repo, ref: tag }).catch(() => {})
+            await github.rest.git.createRef({ ...context.repo, ref: `refs/${tag}` , sha: process.env.GITHUB_SHA })

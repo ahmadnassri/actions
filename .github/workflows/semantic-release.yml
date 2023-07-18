@@ -1,0 +1,45 @@
+name: semantic-release
+
+on:
+  workflow_call:
+    outputs:
+      published:
+        description: true when release is successfully published
+        value: ${{ jobs.release.outputs.published }}
+
+      release-version:
+        description: The version of the last release
+        value: ${{ jobs.release.outputs.release-version }}
+
+      release-version-major:
+        description: last release version major component
+        value: ${{ jobs.release.outputs.release-version-major }}
+
+      release-version-minor:
+        description: last release version minor component
+        value: ${{ jobs.release.outputs.release-version-minor }}
+
+jobs:
+  release:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    outputs:
+      published: ${{ steps.release.outputs.published }}
+      release-version: ${{ steps.release.outputs.release-version }}
+      release-version-major: ${{ steps.release.outputs.release-version-major }}
+      release-version-minor: ${{ steps.release.outputs.release-version-minor }}
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+      - id: release
+        uses: ahmadnassri/action-semantic-release@v2.2.3
+        with:
+          config: ${{ github.workspace }}/.semantic.json
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
