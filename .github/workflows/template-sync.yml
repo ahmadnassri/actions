@@ -1,19 +1,6 @@
 name: template sync
 
-on:
-  workflow_call:
-    inputs:
-      repository_default_branch:
-        description: The default/main branch of the repository
-        default: master
-        required: false
-        type: string
-
-      repository_is_template:
-        description: Flag indicating if the repository is a template
-        default: master
-        required: false
-        type: string
+on: workflow_call
 
 permissions: read-all
 
