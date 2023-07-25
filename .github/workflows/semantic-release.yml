@@ -2,6 +2,12 @@ name: semantic-release
 
 on:
   workflow_call:
+    inputs:
+      repository_default_branch:
+        type: string
+        default: main
+        required: true
+
     outputs:
       published:
         description: true when release is successfully published
@@ -19,15 +25,20 @@ on:
         description: last release version minor component
         value: ${{ jobs.release.outputs.release-version-minor }}
 
+permissions:
+  contents: write
+  packages: write
+  pull-requests: write
+
+
+
 jobs:
   release:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      packages: write
+    if: ${{ inputs.repository_default_branch == github.ref_name }}
 
     outputs:
       published: ${{ steps.release.outputs.published }}
@@ -37,6 +48,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.5.3
+
       - id: release
         uses: ahmadnassri/action-semantic-release@v2.2.3
         with:
