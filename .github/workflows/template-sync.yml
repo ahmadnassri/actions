@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.5.3
-      - uses: ahmadnassri/action-template-repository-sync@v2.4.0
+      - uses: ahmadnassri/action-template-repository-sync@v2.4.1
         with:
           event: ${{ inputs.event }}
           github-token: ${{ secrets.GH_TOKEN }}
