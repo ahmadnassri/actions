@@ -6,7 +6,7 @@ on:
       event:
         type: string
         default: main
-        required: true
+        required: false
 
 permissions: read-all
 
