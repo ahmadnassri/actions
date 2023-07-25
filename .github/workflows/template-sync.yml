@@ -1,12 +1,6 @@
 name: template sync
 
-on:
-  workflow_call:
-    inputs:
-      event:
-        type: string
-        default: main
-        required: false
+on: workflow_call
 
 permissions: read-all
 
@@ -23,5 +17,4 @@ jobs:
 
       - uses: ahmadnassri/action-template-repository-sync@v2.4.4
         with:
-          event: ${{ inputs.event }}
           github-token: ${{ secrets.GH_TOKEN }}
