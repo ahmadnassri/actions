@@ -9,13 +9,13 @@ on:
 
 jobs:
   metadata:
-    uses: ./.github/workflows/metadata.yml
+    uses: ./.github/workflows/job-metadata.yml
 
   lint-commits:
-    uses: ./.github/workflows/lint-commits.yml
+    uses: ./.github/workflows/job-lint-commits.yml
 
   lint-content:
-    uses: ./.github/workflows/lint-documentation.yml
+    uses: ./.github/workflows/job-lint-documentation.yml
 
     permissions:
       contents: write
@@ -30,6 +30,6 @@ jobs:
 
     if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
 
-    uses: ./.github/workflows/template-sync.yml
+    uses: ./.github/workflows/job-template-sync.yml
     secrets:
       github-token: ${{ secrets.github-token }}

@@ -10,7 +10,7 @@ permissions: read-all
 jobs:
   auto-merge:
     secrets: inherit
-    uses: ./.github/workflows/auto-merge.yml
+    uses: ./.github/workflows/job-auto-merge.yml
     permissions:
       contents: write
       pull-requests: write

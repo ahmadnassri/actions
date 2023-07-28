@@ -10,12 +10,12 @@ permissions: read-all
 jobs:
   template-sync:
     secrets: inherit
-    uses: ./.github/workflows/template-sync.yml
+    uses: ./.github/workflows/job-template-sync.yml
 
   auto-merge:
     needs: template-sync
     secrets: inherit
-    uses: ./.github/workflows/auto-merge.yml
+    uses: ./.github/workflows/job-auto-merge.yml
     permissions:
       contents: write
       pull-requests: write

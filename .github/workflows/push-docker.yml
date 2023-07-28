@@ -4,7 +4,7 @@ on: workflow_call
 
 jobs:
   metadata:
-    uses: ./.github/workflows/metadata.yml
+    uses: ./.github/workflows/job-metadata.yml
 
   image:
     runs-on: ubuntu-latest
@@ -17,10 +17,10 @@ jobs:
         run: echo "name=$(basename "${GITHUB_REPOSITORY/docker-//}")" >> "$GITHUB_OUTPUT"
 
   lint-commits:
-    uses: ./.github/workflows/lint-commits.yml
+    uses: ./.github/workflows/job-lint-commits.yml
 
   lint-content:
-    uses: ./.github/workflows/lint-all.yml
+    uses: ./.github/workflows/job-lint-all.yml
 
     permissions:
       contents: write
@@ -38,7 +38,7 @@ jobs:
       packages: write
       pull-requests: write
 
-    uses: ./.github/workflows/semantic-release.yml
+    uses: ./.github/workflows/job-semantic-release.yml
     with:
       repository_default_branch: ${{ needs.metadata.outputs.repository_default_branch }}
 
@@ -75,7 +75,7 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
 
-    uses: ./.github/workflows/docker-build-push.yml
+    uses: ./.github/workflows/job-docker-build-push.yml
     with:
       name: ${{ needs.image.outputs.name }}
       version: ${{ needs.release.outputs.release-version }}
