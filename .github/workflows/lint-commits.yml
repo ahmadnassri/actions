@@ -3,7 +3,7 @@ name: lint-commits
 on: workflow_call
 
 jobs:
-  commit-lint:
+  main:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest

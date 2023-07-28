@@ -3,7 +3,7 @@ name: auto-merge
 on: workflow_call
 
 jobs:
-  auto-merge:
+  main:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest

@@ -31,7 +31,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  release:
+  main:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest

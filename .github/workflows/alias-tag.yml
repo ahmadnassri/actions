@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 jobs:
-  alias-tag:
+  main:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest

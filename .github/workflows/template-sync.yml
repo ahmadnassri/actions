@@ -1,11 +1,11 @@
-name: template sync
+name: template-sync
 
 on: workflow_call
 
 permissions: read-all
 
 jobs:
-  sync:
+  main:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest
