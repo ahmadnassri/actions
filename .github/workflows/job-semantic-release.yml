@@ -2,11 +2,21 @@ name: semantic-release
 
 on:
   workflow_call:
+    secrets:
+      signing-key:
+        description: SSH private key used to sign the release
+        required: false
+
     inputs:
       repository_default_branch:
         type: string
         default: main
         required: true
+
+      sign-commits:
+        type: boolean
+        default: false
+        required: false
 
     outputs:
       published:
@@ -31,6 +41,19 @@ permissions:
   pull-requests: write
 
 jobs:
+  setup-sign-key:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    if: ${{ inputs.sign-commits == true }}
+
+    steps:
+      - run: |
+          git config --global gpg.format ssh
+          git config --global commit.gpgsign true
+          git config --global user.signingkey "${{ secrets.signing-key }}"
+
   semantic-release:
     timeout-minutes: 5
 

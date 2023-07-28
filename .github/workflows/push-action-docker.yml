@@ -42,7 +42,10 @@ jobs:
       pull-requests: write
 
     uses: ./.github/workflows/job-semantic-release.yml
+    secrets:
+      signing-key: ${{ secrets.SSH_KEY }}
     with:
+      sign-commits: true
       repository_default_branch: ${{ needs.metadata.outputs.repository_default_branch }}
 
   publish:
