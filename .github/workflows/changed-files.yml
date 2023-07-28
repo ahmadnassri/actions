@@ -23,7 +23,7 @@ on:
         value: ${{ jobs.main.outputs.json }}
 
 jobs:
-  main:
+  changed-files:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest

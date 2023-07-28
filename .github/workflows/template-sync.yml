@@ -5,7 +5,7 @@ on: workflow_call
 permissions: read-all
 
 jobs:
-  main:
+  template-sync:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest

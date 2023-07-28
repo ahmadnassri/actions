@@ -42,7 +42,7 @@ on:
         required: true
 
 jobs:
-  main:
+  docker-build-push:
     timeout-minutes: 10
 
     name: ${{ format('publish to {0}', inputs.registry) || 'publish-step' }}

@@ -31,7 +31,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  main:
+  semantic-release:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest

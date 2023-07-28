@@ -16,7 +16,7 @@ on:
         value: ${{ jobs.metadata.outputs.repository_is_template }}
 
 jobs:
-  main:
+  metadata:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest
