@@ -2,6 +2,11 @@ name: docker-publis
 
 on:
   workflow_call:
+    secrets:
+      password:
+        description: password to login to registry
+        required: true
+
     inputs:
       registry:
         type: string
@@ -14,11 +19,6 @@ on:
         description: username to login to registry
         default: ${{ github.repository_owner }}
         required: false
-
-      password:
-        type: string
-        description: password to login to registry
-        required: true
 
       platforms:
         type: string
@@ -59,7 +59,7 @@ jobs:
         with:
           registry: ${{ inputs.registry }}
           username: ${{ inputs.username }}
-          password: ${{ inputs.password }}
+          password: ${{ secrets.password }}
 
       # publish
       - uses: docker/build-push-action@v4
