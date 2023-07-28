@@ -2,6 +2,9 @@ name: push
 
 on: workflow_call
 
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
 jobs:
   metadata:
     uses: ./.github/workflows/job-metadata.yml

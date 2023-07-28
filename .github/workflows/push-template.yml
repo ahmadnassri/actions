@@ -7,6 +7,9 @@ on:
         description: GitHub Personal Access Token
         required: true
 
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
 jobs:
   metadata:
     uses: ./.github/workflows/job-metadata.yml
