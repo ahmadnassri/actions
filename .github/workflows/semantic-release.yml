@@ -30,8 +30,6 @@ permissions:
   packages: write
   pull-requests: write
 
-
-
 jobs:
   release:
     timeout-minutes: 5
