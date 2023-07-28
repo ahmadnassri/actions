@@ -12,15 +12,15 @@ on:
     outputs:
       changed:
         description: changed flag
-        value: ${{ jobs.main.outputs.changed }}
+        value: ${{ jobs.changed-files.outputs.changed }}
 
       files:
         description: changed files
-        value: ${{ jobs.main.outputs.files }}
+        value: ${{ jobs.changed-files.outputs.files }}
 
       json:
         description: changed files as JSON
-        value: ${{ jobs.main.outputs.json }}
+        value: ${{ jobs.changed-files.outputs.json }}
 
 jobs:
   changed-files:

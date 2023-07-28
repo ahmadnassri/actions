@@ -1,4 +1,4 @@
-name: pull-request-target
+name: pull-request-target-template
 
 on: workflow_call
 
@@ -8,7 +8,12 @@ concurrency:
 permissions: read-all
 
 jobs:
+  template-sync:
+    secrets: inherit
+    uses: ahmadnassri/actions/.github/workflows/template-sync.yml@master
+
   auto-merge:
+    needs: template-sync
     secrets: inherit
     uses: ahmadnassri/actions/.github/workflows/auto-merge.yml@master
     permissions:

@@ -1,0 +1,57 @@
+name: docker-push-readme
+
+on:
+  workflow_call:
+    secrets:
+      password:
+        description: password to login to registry
+        required: true
+
+    inputs:
+      username:
+        type: string
+        description: username to login to registry
+        default: ${{ github.repository_owner }}
+        required: false
+
+      description:
+        type: string
+        description: image description
+        default: ${{ github.event.repository.description }}
+        required: false
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
+permissions: read-all
+
+jobs:
+  publish:
+    timeout-minutes: 10
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - id: image
+        name: extract image name
+        run: echo "name=$(basename "${GITHUB_REPOSITORY/docker-//}")" >> "$GITHUB_OUTPUT"
+
+      - name: update docker hub
+        run: |
+          JWT=$(curl --silent --data "username=${{ inputs.username }}&password=${{ secrets.password }}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+          jq \
+            --null-input \
+            --arg description "${{ inputs.description }}" \
+            --arg readme "$(cat README.md)" \
+            '{"description": $description, "full_description": $readme}' \
+          | \
+          curl \
+            --silent \
+            --request PATCH \
+            --header "Authorization: JWT ${JWT}" \
+            --header "Content-Type: application/json" \
+            --data @- \
+            --output /dev/null \
+            "https://hub.docker.com/v2/repositories/${{ inputs.username }}/${{ steps.image.outputs.name }}"

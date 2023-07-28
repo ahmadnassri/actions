@@ -11,19 +11,19 @@ on:
     outputs:
       published:
         description: true when release is successfully published
-        value: ${{ jobs.release.outputs.published }}
+        value: ${{ jobs.semantic-release.outputs.published }}
 
       release-version:
         description: The version of the last release
-        value: ${{ jobs.release.outputs.release-version }}
+        value: ${{ jobs.semantic-release.outputs.release-version }}
 
       release-version-major:
         description: last release version major component
-        value: ${{ jobs.release.outputs.release-version-major }}
+        value: ${{ jobs.semantic-release.outputs.release-version-major }}
 
       release-version-minor:
         description: last release version minor component
-        value: ${{ jobs.release.outputs.release-version-minor }}
+        value: ${{ jobs.semantic-release.outputs.release-version-minor }}
 
 permissions:
   contents: write
