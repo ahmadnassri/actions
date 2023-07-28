@@ -38,5 +38,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: ahmadnassri/action-changed-files@v1.0.4
-        id: main
+      - id: main
+        uses: ahmadnassri/action-changed-files@v1.0.4
+        with:
+          pathspec: ${{ inputs.pathspec }}
