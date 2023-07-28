@@ -1,16 +1,21 @@
 name: push
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      github-token:
+        description: GitHub Personal Access Token
+        required: true
 
 jobs:
   metadata:
-    uses: ahmadnassri/actions/.github/workflows/metadata.yml@master
+    uses: ./.github/workflows/metadata.yml
 
   lint-commits:
-    uses: ahmadnassri/actions/.github/workflows/lint-commits.yml@master
+    uses: ./.github/workflows/lint-commits.yml
 
   lint-content:
-    uses: ahmadnassri/actions/.github/workflows/lint-documentation.yml@master
+    uses: ./.github/workflows/lint-documentation.yml
 
     permissions:
       contents: write
@@ -23,8 +28,8 @@ jobs:
       - lint-commits
       - lint-content
 
-    secrets: inherit
-
     if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
 
-    uses: ahmadnassri/actions/.github/workflows/template-sync.yml@master
+    uses: ./.github/workflows/template-sync.yml
+    secrets:
+      github-token: ${{ secrets.github-token }}

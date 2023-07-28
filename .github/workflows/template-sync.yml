@@ -1,8 +1,11 @@
 name: template-sync
 
-on: workflow_call
-
-permissions: read-all
+on:
+  workflow_call:
+    secrets:
+      github-token:
+        description: GitHub Personal Access Token
+        required: true
 
 jobs:
   template-sync:
@@ -17,4 +20,4 @@ jobs:
 
       - uses: ahmadnassri/action-template-repository-sync@v2.4.6
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: ${{ secrets.github-token }}
