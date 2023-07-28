@@ -1,0 +1,40 @@
+name: changed-files
+
+on:
+  workflow_call:
+    inputs:
+      pathspec:
+        description: "Pathspec to filter changed files"
+        required: false
+        default: "*"
+        type: string
+
+    outputs:
+      changed:
+        description: changed flag
+        value: ${{ jobs.main.outputs.changed }}
+
+      files:
+        description: changed files
+        value: ${{ jobs.main.outputs.files }}
+
+      json:
+        description: changed files as JSON
+        value: ${{ jobs.main.outputs.json }}
+
+jobs:
+  main:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      changed: ${{ steps.main.outputs.changed }}
+      files: ${{ steps.main.outputs.files }}
+      json: ${{ steps.main.outputs.json }}
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - uses: ahmadnassri/action-main@v1.0.4
+        id: main
