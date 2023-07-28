@@ -8,15 +8,15 @@ on:
         required: false
 
     inputs:
-      repository_default_branch:
-        type: string
-        default: main
-        required: true
-
       sign-commits:
         type: boolean
         default: false
         required: false
+
+      repository_default_branch:
+        type: string
+        default: main
+        required: true
 
     outputs:
       published:
