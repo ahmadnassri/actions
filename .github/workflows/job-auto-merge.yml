@@ -1,7 +1,12 @@
 name: auto-merge
 
-on: workflow_call
-
+on:
+  workflow_call:
+    secrets:
+      github-token:
+        # useful to use a PAT instead of the default GITHUB_TOKEN to get signed commits on merge
+        description: GitHub Personal Access Token
+        required: false
 jobs:
   auto-merge:
     timeout-minutes: 5
@@ -15,7 +20,7 @@ jobs:
       - id: dependabot
         uses: dependabot/fetch-metadata@v1.6.0
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ secrets.github-token || github.token }}
 
       - name: auto merge conditions
         id: auto-merge
@@ -29,7 +34,7 @@ jobs:
         if: ${{ steps.auto-merge.conclusion == 'success' }}
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.github-token || github.token }}
         run: |
           gh pr review --approve "$PR_URL"
           gh pr merge --auto --rebase "$PR_URL"

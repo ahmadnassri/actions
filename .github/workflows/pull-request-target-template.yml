@@ -1,19 +1,26 @@
 name: pull-request-target-template
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      github-token:
+        description: GitHub Personal Access Token
+        required: true
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
 
 jobs:
   template-sync:
-    secrets: inherit
     uses: ./.github/workflows/job-template-sync.yml
+    secrets:
+      github-token: ${{ secrets.github-token }}
 
   auto-merge:
     needs: template-sync
-    secrets: inherit
     uses: ./.github/workflows/job-auto-merge.yml
+    secrets:
+      github-token: ${{ secrets.github-token }}
     permissions:
       contents: write
       pull-requests: write
