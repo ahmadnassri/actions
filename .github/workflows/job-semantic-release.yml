@@ -3,8 +3,12 @@ name: semantic-release
 on:
   workflow_call:
     secrets:
-      signing-key:
-        description: SSH private key used to sign the release
+      public-key:
+        description: SSH public key
+        required: false
+
+      private-key:
+        description: SSH private key
         required: false
 
     inputs:
@@ -41,6 +45,25 @@ permissions:
   pull-requests: write
 
 jobs:
+  git-sign:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    if: ${{ inputs.sign-commits == true }}
+
+    steps:
+    - run: |
+        git config gpg.format ssh
+        git config tag.gpgsign true
+        git config commit.gpgsign true
+
+        git config user.signingkey "${{ secrets.public-key }}"
+
+    - run: |
+        ssh-agent -a /tmp/ssh_agent.sock > /dev/null
+        ssh-add - <<< "${{ secrets.private-key }}"
+
   semantic-release:
     timeout-minutes: 5
 
@@ -60,14 +83,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.5.3
-
-      - if: ${{ inputs.sign-commits == true }}
-        run: |
-          git config --global gpg.format ssh
-          git config --global commit.gpgsign true
-          git config --global user.signingkey "${{ secrets.signing-key }}"
-          git config --global gpg.ssh.allowedSignersFile ~/.allowed_signers
-          echo "$GIT_COMMITTER_EMAIL "${{ secrets.signing-key }}"" >> ~/.allowed_signers
 
       - id: release
         uses: ahmadnassri/action-semantic-release@v2.2.3
