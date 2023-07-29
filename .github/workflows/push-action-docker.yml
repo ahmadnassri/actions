@@ -61,7 +61,7 @@ jobs:
       platforms: linux/amd64,linux/arm64
       registry: ghcr.io
     secrets:
-      password: ${{ github.token }}
+      password: ${{ secrets.GITHUB_TOKEN }}
 
   alias:
     needs: release
