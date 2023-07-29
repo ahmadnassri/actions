@@ -58,10 +58,6 @@ jobs:
       release-version-major: ${{ steps.release.outputs.release-version-major }}
       release-version-minor: ${{ steps.release.outputs.release-version-minor }}
 
-    env:
-      GIT_COMMITTER_NAME: ${{ github.actor }}-bot
-      GIT_COMMITTER_EMAIL: opensource@ahmadnassri.net
-
     steps:
       - uses: actions/checkout@v3.5.3
 
@@ -73,6 +69,8 @@ jobs:
           git config commit.gpgsign true
 
           git config user.signingkey "${{ secrets.public-key }}"
+
+          eval `ssh-agent -s`
 
           ssh-agent -a /tmp/ssh_agent.sock > /dev/null
           ssh-add - <<< "${{ secrets.private-key }}"
