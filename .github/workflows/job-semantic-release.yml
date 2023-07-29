@@ -45,25 +45,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  git-sign:
-    timeout-minutes: 5
-
-    runs-on: ubuntu-latest
-
-    if: ${{ inputs.sign-commits == true }}
-
-    steps:
-    - run: |
-        git config gpg.format ssh
-        git config tag.gpgsign true
-        git config commit.gpgsign true
-
-        git config user.signingkey "${{ secrets.public-key }}"
-
-    - run: |
-        ssh-agent -a /tmp/ssh_agent.sock > /dev/null
-        ssh-add - <<< "${{ secrets.private-key }}"
-
   semantic-release:
     timeout-minutes: 5
 
@@ -83,6 +64,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.5.3
+
+      - name: git-sign
+        if: ${{ inputs.sign-commits == true }}
+        run: |
+          git config gpg.format ssh
+          git config tag.gpgsign true
+          git config commit.gpgsign true
+
+          git config user.signingkey "${{ secrets.public-key }}"
+
+          ssh-agent -a /tmp/ssh_agent.sock > /dev/null
+          ssh-add - <<< "${{ secrets.private-key }}"
 
       - id: release
         uses: ahmadnassri/action-semantic-release@v2.2.3
