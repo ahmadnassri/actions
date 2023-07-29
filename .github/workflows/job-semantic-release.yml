@@ -54,6 +54,10 @@ jobs:
       release-version-major: ${{ steps.release.outputs.release-version-major }}
       release-version-minor: ${{ steps.release.outputs.release-version-minor }}
 
+    env:
+      GIT_COMMITTER_NAME: ${{ github.actor }}-bot
+      GIT_COMMITTER_EMAIL: opensource@ahmadnassri.net
+
     steps:
       - uses: actions/checkout@v3.5.3
 
@@ -61,9 +65,9 @@ jobs:
         run: |
           git config --global gpg.format ssh
           git config --global commit.gpgsign true
-          git config --global forceSignAnnotated true
-          git config --global gpg.program /usr/bin/gpg
           git config --global user.signingkey "${{ secrets.signing-key }}"
+          git config --global gpg.ssh.allowedSignersFile ~/.config/git/allowed_signers
+          echo "$GIT_COMMITTER_EMAIL "${{ secrets.signing-key }}"" >> ~/.config/git/allowed_signers
 
       - id: release
         uses: ahmadnassri/action-semantic-release@v2.2.3
