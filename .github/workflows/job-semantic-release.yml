@@ -2,21 +2,7 @@ name: semantic-release
 
 on:
   workflow_call:
-    secrets:
-      public-key:
-        description: SSH public key
-        required: false
-
-      private-key:
-        description: SSH private key
-        required: false
-
     inputs:
-      sign-commits:
-        type: boolean
-        default: false
-        required: false
-
       repository_default_branch:
         type: string
         default: main
@@ -60,19 +46,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3.5.3
-
-      - uses: webfactory/ssh-agent@v0.8.0
-        with:
-            ssh-private-key: ${{ secrets.private-key }}
-
-      - name: git-sign
-        if: ${{ inputs.sign-commits == true }}
-        run: |
-          git config gpg.format ssh
-          git config tag.gpgsign true
-          git config commit.gpgsign true
-
-          git config user.signingkey "${{ secrets.public-key }}"
 
       - id: release
         uses: ahmadnassri/action-semantic-release@v2.2.3

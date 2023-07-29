@@ -1,21 +1,6 @@
 name: push-action-docker
 
-on:
-  workflow_call:
-    secrets:
-      public-key:
-        description: SSH public key
-        required: false
-
-      private-key:
-        description: SSH private key
-        required: false
-
-    inputs:
-      sign-commits:
-        type: boolean
-        default: false
-        required: false
+on: workflow_call
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -57,11 +42,7 @@ jobs:
       pull-requests: write
 
     uses: ./.github/workflows/job-semantic-release.yml
-    secrets:
-      public-key: ${{ secrets.public-key }}
-      private-key: ${{ secrets.private-key }}
     with:
-      sign-commits: true
       repository_default_branch: ${{ needs.metadata.outputs.repository_default_branch }}
 
   publish:
