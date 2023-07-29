@@ -66,8 +66,8 @@ jobs:
           git config --global gpg.format ssh
           git config --global commit.gpgsign true
           git config --global user.signingkey "${{ secrets.signing-key }}"
-          git config --global gpg.ssh.allowedSignersFile ~/.config/git/allowed_signers
-          echo "$GIT_COMMITTER_EMAIL "${{ secrets.signing-key }}"" >> ~/.config/git/allowed_signers
+          git config --global gpg.ssh.allowedSignersFile ~/.allowed_signers
+          echo "$GIT_COMMITTER_EMAIL "${{ secrets.signing-key }}"" >> ~/.allowed_signers
 
       - id: release
         uses: ahmadnassri/action-semantic-release@v2.2.3
