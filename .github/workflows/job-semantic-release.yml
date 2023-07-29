@@ -61,6 +61,7 @@ jobs:
         run: |
           git config --global gpg.format ssh
           git config --global commit.gpgsign true
+          git config --global gpg.program /usr/bin/gpg
           git config --global user.signingkey "${{ secrets.signing-key }}"
 
       - id: release
