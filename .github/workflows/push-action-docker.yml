@@ -58,7 +58,8 @@ jobs:
 
     uses: ./.github/workflows/job-semantic-release.yml
     secrets:
-      signing-key: ${{ secrets.signing-key }}
+      public-key: ${{ secrets.public-key }}
+      private-key: ${{ secrets.private-key }}
     with:
       sign-commits: true
       repository_default_branch: ${{ needs.metadata.outputs.repository_default_branch }}
