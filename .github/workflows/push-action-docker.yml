@@ -3,8 +3,12 @@ name: push-action-docker
 on:
   workflow_call:
     secrets:
-      signing-key:
-        description: SSH private key used to sign the release
+      public-key:
+        description: SSH public key
+        required: false
+
+      private-key:
+        description: SSH private key
         required: false
 
     inputs:
