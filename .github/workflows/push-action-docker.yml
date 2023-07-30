@@ -35,10 +35,7 @@ jobs:
       - image
       - metadata
 
-    uses: ./.github/workflows/job-docker-build-push.yml
-    with:
-      dry-run: true
-      name: ${{ needs.image.outputs.name }}
+    uses: ./.github/workflows/job-docker-build-test.yml
 
   release:
     needs:

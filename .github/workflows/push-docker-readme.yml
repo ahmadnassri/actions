@@ -2,11 +2,6 @@ name: docker-push-readme
 
 on:
   workflow_call:
-    secrets:
-      password:
-        description: password to login to registry
-        required: true
-
     inputs:
       username:
         type: string

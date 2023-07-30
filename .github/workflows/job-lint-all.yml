@@ -18,7 +18,7 @@ jobs:
 
       - uses: oxsecurity/megalinter@v7.2.1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MEGALINTER_CONFIG: .github/linters/.mega-linter.yml
           GITHUB_COMMENT_REPORTER: true
           GITHUB_STATUS_REPORTER: true

@@ -1,29 +1,18 @@
-name: docker-publis
+name: docker-build-push
 
 on:
   workflow_call:
     secrets:
       password:
         description: password to login to registry
-        required: false
-
-    inputs:
-      name:
-        type: string
-        description: image name to publish
         required: true
 
-      dry-run:
-        type: boolean
-        description: dry run
-        default: false
-        required: false
-
+    inputs:
       registry:
         type: string
         default: ghcr.io
         description: registry to publish to
-        required: false
+        required: true
 
       username:
         type: string
@@ -37,48 +26,28 @@ on:
         default: linux/amd64,linux/arm64,linux/arm/v
         required: false
 
+      name:
+        type: string
+        description: image name to publish
+        required: true
+
       version:
         type: string
         description: release to publish
-        required: false
+        required: true
 
       alias:
         type: string
         description: release alias to publish
-        required: false
+        required: true
 
 jobs:
-  docker-build-test:
-    timeout-minutes: 10
-
-    runs-on: ubuntu-latest
-
-    if: ${{ inputs.dry-run == true }}
-
-    steps:
-      - uses: actions/checkout@v3.5.3
-      - uses: docker/setup-qemu-action@v2
-      - uses: docker/setup-buildx-action@v2
-
-      # test build
-      - uses: docker/build-push-action@v4
-        with:
-          load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: ${{ inputs.registry }}/${{ inputs.username }}/${{ inputs.name }}:test
-
-      - name: clear-test-image
-        run: docker run --rm ${{ inputs.registry }}/${{ inputs.username }}/${{ inputs.name }}:test
-
   docker-build-push:
     timeout-minutes: 10
 
     name: ${{ format('publish to {0}', inputs.registry) || 'publish-step' }}
 
     runs-on: ubuntu-latest
-
-    if: ${{ inputs.dry-run == false }}
 
     steps:
       - uses: actions/checkout@v3.5.3

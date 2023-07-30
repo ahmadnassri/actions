@@ -1,7 +1,6 @@
 name: push-action-composite
 
-on:
-  workflow_call
+on: workflow_call
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

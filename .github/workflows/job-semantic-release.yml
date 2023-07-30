@@ -52,4 +52,4 @@ jobs:
         with:
           config: ${{ github.workspace }}/.semantic.json
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
