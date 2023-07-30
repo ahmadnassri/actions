@@ -30,11 +30,22 @@ jobs:
       statuses: write
       pull-requests: write
 
+  test-build:
+    needs:
+      - image
+      - metadata
+
+    uses: ./.github/workflows/job-docker-build-push.yml
+    with:
+      dry-run: true
+      name: ${{ needs.image.outputs.name }}
+
   release:
     needs:
       - metadata
       - lint-commits
       - lint-content
+      - test-build
 
     permissions:
       contents: write
