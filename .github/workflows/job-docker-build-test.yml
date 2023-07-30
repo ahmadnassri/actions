@@ -20,6 +20,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: ${{ github.repository }}:test
-
-      - name: clear-test-image
-        run: docker run --rm ${{ github.repository }}:test
