@@ -1,0 +1,32 @@
+name: lint-documentation
+
+on: workflow_call
+
+permissions:
+  contents: write
+  statuses: write
+  pull-requests: write
+
+jobs:
+  lint-documentation:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - uses: oxsecurity/megalinter/flavors/ci_light@v7.2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MEGALINTER_CONFIG: .github/linters/.mega-linter.yml
+          GITHUB_COMMENT_REPORTER: true
+          GITHUB_STATUS_REPORTER: true
+
+      - uses: actions/upload-artifact@v3.1.2
+        if: ${{ success() }} || ${{ failure() }}
+        with:
+          name: mega-linter-reports
+          path: |
+            megalinter-reports
+            mega-linter.log
