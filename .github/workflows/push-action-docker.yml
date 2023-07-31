@@ -46,6 +46,7 @@ jobs:
       - lint-commits
       - lint-content
       - test-build
+      - npm-test
 
     permissions:
       contents: write
