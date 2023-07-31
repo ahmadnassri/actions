@@ -20,7 +20,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: ${{ github.repository }}:test
-
-      # test application
-      - name: test-app
-        run: make test

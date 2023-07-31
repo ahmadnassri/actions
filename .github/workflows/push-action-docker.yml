@@ -30,6 +30,9 @@ jobs:
       statuses: write
       pull-requests: write
 
+  npm-test:
+    uses: ./.github/workflows/job-npm-test.yml
+
   test-build:
     needs:
       - image
@@ -49,9 +52,9 @@ jobs:
       packages: write
       pull-requests: write
 
+    if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
+
     uses: ./.github/workflows/job-semantic-release.yml
-    with:
-      repository_default_branch: ${{ needs.metadata.outputs.repository_default_branch }}
 
   publish:
     needs:

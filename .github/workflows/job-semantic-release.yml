@@ -2,12 +2,6 @@ name: semantic-release
 
 on:
   workflow_call:
-    inputs:
-      repository_default_branch:
-        type: string
-        default: main
-        required: true
-
     outputs:
       published:
         description: true when release is successfully published
@@ -36,8 +30,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    if: ${{ inputs.repository_default_branch == github.ref_name }}
-
     outputs:
       published: ${{ steps.release.outputs.published }}
       release-version: ${{ steps.release.outputs.release-version }}
@@ -52,4 +44,5 @@ jobs:
         with:
           config: ${{ github.workspace }}/.semantic.json
         env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

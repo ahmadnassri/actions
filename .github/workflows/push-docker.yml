@@ -41,9 +41,9 @@ jobs:
       packages: write
       pull-requests: write
 
+    if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
+
     uses: ./.github/workflows/job-semantic-release.yml
-    with:
-      repository_default_branch: ${{ needs.metadata.outputs.repository_default_branch }}
 
   publish-strategy:
     needs:
