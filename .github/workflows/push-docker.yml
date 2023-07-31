@@ -1,4 +1,4 @@
-name: push
+name: push-docker
 
 on: workflow_call
 

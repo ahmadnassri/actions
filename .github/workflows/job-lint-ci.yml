@@ -1,4 +1,4 @@
-name: lint-documentation
+name: lint-ci
 
 on: workflow_call
 
