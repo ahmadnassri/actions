@@ -1,11 +1,6 @@
 name: push-template
 
-on:
-  workflow_call:
-    secrets:
-      github-token:
-        description: GitHub Personal Access Token
-        required: true
+on: workflow_call
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -35,4 +30,4 @@ jobs:
 
     uses: ./.github/workflows/job-template-sync.yml
     secrets:
-      github-token: ${{ secrets.github-token }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
