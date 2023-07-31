@@ -1,0 +1,43 @@
+name: npm-mirror
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version
+        required: false
+        default: latest
+        type: string
+
+      os:
+        description: Operating System
+        required: false
+        default: ubuntu-latest
+        type: string
+
+jobs:
+  npm-mirror:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v3.7.0
+        with:
+          registry-url: https://npm.pkg.github.com
+          node-version: latest
+
+      - name: publish to github registry
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          jq '.name = "@'"${GITHUB_REPOSITORY/node-/}"'"' package.json > /tmp/package.json; mv /tmp/package.json .
+          npm version --no-git-tag-version "v${{ needs.release.outputs.version }}"
+          npm publish
