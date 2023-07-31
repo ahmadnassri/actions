@@ -1,0 +1,29 @@
+name: load-matrix
+
+on:
+  workflow_call:
+    inputs:
+      matrix:
+        description: The matrix file name
+        required: true
+        type: string
+
+    outputs:
+      matrix:
+        description: The matrix content
+        value: ${{ jobs.load-matrix.outputs.matrix }}
+
+jobs:
+  load-matrix:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.parser.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - id: parser
+        run: echo "matrix=$(jq -c . < ${{ inputs.matrix }})" >> "$GITHUB_OUTPUT"

@@ -1,0 +1,115 @@
+name: push-node-lib
+
+on: workflow_call
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
+jobs:
+  metadata:
+    uses: ./.github/workflows/job-metadata.yml
+
+  docker:
+    runs-on: ubuntu-latest
+
+    outputs:
+      name: ${{ steps.image.outputs.name }}
+      exists: ${{ steps.dockerfile.outputs.exists }}
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - id: dockerfile
+        run: echo "exists=$([[ -f "${{ github.workspace }}/Dockerfile" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - id: image
+        run: echo "name=$(basename "${GITHUB_REPOSITORY/docker-//}")" >> "$GITHUB_OUTPUT"
+
+  lint-commits:
+    uses: ./.github/workflows/job-lint-commits.yml
+
+  lint-content:
+    uses: ./.github/workflows/job-lint-javascript.yml
+
+    permissions:
+      contents: write
+      statuses: write
+      pull-requests: write
+
+  npm-audit:
+    uses: ./.github/workflows/job-npm-audit.yml
+
+  test-strategy:
+    uses: ./.github/workflows/job-load-matrix.yml
+    with:
+      matrix: .github/test-matrix.json
+
+  npm-test:
+    needs: test-strategy
+
+    strategy:
+      matrix: ${{ fromJSON(needs.test-strategy.outputs.matrix) }}
+
+    uses: ./.github/workflows/job-npm-test.yml
+    with:
+      os: ${{ matrix.os }}
+      node-version: ${{ matrix.node-version }}
+
+  release:
+    needs:
+      - metadata
+      - lint-commits
+      - lint-content
+      - npm-audit
+      - npm-test
+
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+
+    if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
+
+    uses: ./.github/workflows/job-semantic-release.yml
+
+  release-mirror:
+    needs: release
+
+    permissions:
+      packages: write
+
+    if: ${{ needs.release.outputs.published == 'true' }}
+
+    uses: ./.github/workflows/job-npm-mirror.yml
+
+  publish-strategy:
+    needs: docker
+
+    if: ${{ needs.docker.outputs.exists == 'true' }}
+
+    uses: ./.github/workflows/job-load-matrix.yml
+    with:
+      matrix: .github/publish-matrix.json
+
+  publish-docker:
+    needs:
+      - docker
+      - release
+      - metadata
+      - publish-strategy
+
+    if: ${{ needs.docker.outputs.exists == 'true' && needs.release.outputs.published == 'true' }}
+
+    strategy:
+      matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
+
+    uses: ./.github/workflows/job-docker-build-push.yml
+    with:
+      name: ${{ needs.docker.outputs.name }}
+      version: ${{ needs.release.outputs.release-version }}
+      alias: ${{ needs.release.outputs.release-version-major }}
+      platforms: ${{ matrix.platforms }}
+      registry: ${{ matrix.registry }}
+    secrets:
+      password: ${{ secrets.GITHUB_TOKEN }}
+
