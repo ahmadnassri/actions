@@ -30,4 +30,4 @@ jobs:
 
     uses: ./.github/workflows/job-template-sync.yml
     secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
+      github-token: ${{ secrets.GH_TOKEN }}
