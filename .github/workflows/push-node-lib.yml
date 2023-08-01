@@ -112,4 +112,3 @@ jobs:
       registry: ${{ matrix.registry }}
     secrets:
       password: ${{ secrets.GITHUB_TOKEN }}
-
