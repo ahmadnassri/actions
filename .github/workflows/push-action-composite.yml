@@ -35,6 +35,8 @@ jobs:
 
 
     uses: ./.github/workflows/job-semantic-release.yml
+    secrets:
+      github-token: ${{ secrets.GH_TOKEN }}
 
   alias:
     needs: release

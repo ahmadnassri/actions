@@ -71,6 +71,9 @@ jobs:
     if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
 
     uses: ./.github/workflows/job-semantic-release.yml
+    secrets:
+      npm-token: ${{ secrets.NPM_TOKEN }}
+      github-token: ${{ secrets.GH_TOKEN }}
 
   release-mirror:
     needs: release

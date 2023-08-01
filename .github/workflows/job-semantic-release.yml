@@ -2,6 +2,15 @@ name: semantic-release
 
 on:
   workflow_call:
+    secrets:
+      github-token:
+        description: GitHub Personal Access Token
+        required: true
+
+      npm-token:
+        description: npm token
+        required: false
+
     outputs:
       published:
         description: true when release is successfully published
@@ -44,5 +53,5 @@ jobs:
         with:
           config: ${{ github.workspace }}/.semantic.json
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.npm-token }}
+          GITHUB_TOKEN: ${{ secrets.github-token }}

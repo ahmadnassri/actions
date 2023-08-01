@@ -44,6 +44,8 @@ jobs:
     if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
 
     uses: ./.github/workflows/job-semantic-release.yml
+    secrets:
+      github-token: ${{ secrets.GH_TOKEN }}
 
   publish-strategy:
     needs:
