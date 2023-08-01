@@ -3,6 +3,12 @@ name: npm-mirror
 on:
   workflow_call:
     inputs:
+      version:
+        description: release version
+        required: true
+        default: latest
+        type: string
+
       node-version:
         description: Node.js version
         required: false
@@ -39,5 +45,5 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           jq '.name = "@'"${GITHUB_REPOSITORY/node-/}"'"' package.json > /tmp/package.json; mv /tmp/package.json .
-          npm version --no-git-tag-version "v${{ needs.release.outputs.version }}"
+          npm version --no-git-tag-version "v${{ inputs.version }}"
           npm publish

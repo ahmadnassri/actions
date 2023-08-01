@@ -83,6 +83,8 @@ jobs:
     if: ${{ needs.release.outputs.published == 'true' }}
 
     uses: ./.github/workflows/job-npm-mirror.yml
+    with:
+      version: ${{ needs.release.outputs.release-version }}
 
   publish-strategy:
     needs: docker
