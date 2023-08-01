@@ -9,7 +9,4 @@ jobs:
   auto-merge:
     uses: ./.github/workflows/job-auto-merge.yml
     secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
-    permissions:
-      contents: write
-      pull-requests: write
+      github-token: ${{ secrets.GH_TOKEN }}
