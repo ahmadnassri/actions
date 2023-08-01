@@ -73,7 +73,6 @@ jobs:
     uses: ./.github/workflows/job-semantic-release.yml
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
-      github-token: ${{ secrets.GH_TOKEN }}
 
   release-mirror:
     needs: release

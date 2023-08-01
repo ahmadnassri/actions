@@ -5,7 +5,7 @@ on:
     secrets:
       github-token:
         description: GitHub Personal Access Token
-        required: true
+        required: false
 
       npm-token:
         description: npm token
@@ -54,4 +54,4 @@ jobs:
           config: ${{ github.workspace }}/.semantic.json
         env:
           NPM_TOKEN: ${{ secrets.npm-token }}
-          GITHUB_TOKEN: ${{ secrets.github-token }}
+          GITHUB_TOKEN: ${{ secrets.github-token || secrets.GITHUB_TOKEN }}
