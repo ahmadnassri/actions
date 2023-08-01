@@ -1,0 +1,43 @@
+name: push-docker
+
+on: workflow_call
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
+jobs:
+  metadata:
+    uses: ./.github/workflows/job-metadata.yml
+
+  changed-files:
+    uses: ./.github/workflows/job-changed-files.yml
+    with:
+      pathspec: "*.tf *.hcl data.yml"
+
+  lint-commits:
+    uses: ./.github/workflows/job-lint-commits.yml
+
+  lint-content:
+    uses: ./.github/workflows/job-lint-terraform.yml
+
+    permissions:
+      contents: write
+      statuses: write
+      pull-requests: write
+
+  terraform-apply:
+    needs:
+      - metadata
+      - changed-files
+      - lint-commits
+      - lint-content
+
+    # only runs on main branch, when terraform files have changed, or if manually triggered
+    if: |
+      (
+        github.event_name == 'workflow_dispatch' ||
+        needs.changed-files.outputs.changed == 'true'
+      ) &&
+      needs.metadata.outputs.repository_default_branch == github.ref_name
+
+    uses: ./.github/workflows/job-terraform-apply.yml

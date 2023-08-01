@@ -1,0 +1,33 @@
+name: pull-request-terraform
+
+on: workflow_call
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
+permissions: read-all
+
+jobs:
+  metadata:
+    uses: ./.github/workflows/job-metadata.yml
+
+  changed-files:
+    uses: ./.github/workflows/job-changed-files.yml
+    with:
+      pathspec: "*.tf *.hcl data.yml"
+
+  terraform-plan:
+    needs:
+      - metadata
+      - changed-files
+
+    # only runs on non main branch, when terraform files have changed
+    if: |
+      needs.changed-files.outputs.changed == 'true' &&
+      needs.metadata.outputs.repository_default_branch != github.ref_name
+
+    permissions:
+      pull-requests: write
+
+    uses: ./.github/workflows/job-terraform-plan.yml
+    secrets: inherit

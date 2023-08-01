@@ -1,0 +1,48 @@
+name: load-matrix
+
+on: workflow_call
+
+permissions:
+  pull-requests: write
+
+jobs:
+  terraform-plan:
+    timeout-minutes: 30
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check state
+        run: |
+          LOCKED=$(curl -s https://app.terraform.io/api/v2/organizations/${{ github.repository_owner }}/workspaces/github -H "Authorization: Bearer ${{ secrets.TF_TOKEN }}" | jq -r '.data.attributes.locked')
+          if [[ $LOCKED == "true" ]]; then
+            echo "::error::state is locked"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v3.5.3
+
+      - uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
+
+      # cache terraform plugins
+      - uses: actions/cache@v3.3.1
+        id: terraform-cache
+        with:
+          key: terraform-cache-${{ hashFiles('.terraform.lock.hcl') }}
+          path: .terraform
+
+      # install plugins
+      - run: terraform init
+
+      # execute plan
+      - run: terraform apply -auto-approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          TF_VAR_SHARED_TF_TOKEN: ${{ secrets.TF_TOKEN }}
+          TF_VAR_SHARED_GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          TF_VAR_SHARED_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          TF_VAR_SHARED_DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          TF_VAR_SHARED_TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}
+          TF_VAR_SHARED_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
