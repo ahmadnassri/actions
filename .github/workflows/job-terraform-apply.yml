@@ -1,9 +1,6 @@
-name: load-matrix
+name: job-terraform-apply
 
 on: workflow_call
-
-permissions:
-  pull-requests: write
 
 jobs:
   terraform-plan:

@@ -41,3 +41,4 @@ jobs:
       needs.metadata.outputs.repository_default_branch == github.ref_name
 
     uses: ./.github/workflows/job-terraform-apply.yml
+    secrets: inherit

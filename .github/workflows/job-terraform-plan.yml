@@ -1,4 +1,4 @@
-name: load-matrix
+name: job-terraform-plan
 
 on: workflow_call
 
