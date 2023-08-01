@@ -1,0 +1,62 @@
+name: push-action-node
+
+on: workflow_call
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
+jobs:
+  metadata:
+    uses: ./.github/workflows/job-metadata.yml
+
+  lint-commits:
+    uses: ./.github/workflows/job-lint-commits.yml
+
+  lint-content:
+    uses: ./.github/workflows/job-lint-javascript.yml
+
+    permissions:
+      contents: write
+      statuses: write
+      pull-requests: write
+
+  npm-audit:
+    uses: ./.github/workflows/job-npm-audit.yml
+
+  npm-test:
+    uses: ./.github/workflows/job-npm-test.yml
+
+  release:
+    needs:
+      - metadata
+      - lint-commits
+      - lint-content
+      - npm-test
+      - npm-audit
+
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+
+    if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
+
+    uses: ./.github/workflows/job-semantic-release.yml
+
+  alias:
+    needs: release
+
+    if: ${{ needs.release.outputs.published == 'true' }}
+
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+        alias:
+          - version: v${{ needs.release.outputs.release-version-major }}
+          - version: v${{ needs.release.outputs.release-version-major }}.${{ needs.release.outputs.release-version-minor }}
+
+    uses: ./.github/workflows/job-alias-tag.yml
+    with:
+      name: ${{ matrix.alias.version }}
