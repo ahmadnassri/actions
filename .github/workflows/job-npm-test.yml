@@ -30,7 +30,7 @@ jobs:
   npm-test:
     timeout-minutes: 5
 
-    name: ${{ inputs.name || format('test on node-{0}/{1}', inputs.node-version, inputs.os) || 'test-step' }}
+    name: ${{ inputs.name || format('test on node-{0} + {1}', inputs.node-version, inputs.os) || 'test-step' }}
 
     runs-on: ${{ inputs.os }}
 
