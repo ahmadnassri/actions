@@ -3,7 +3,7 @@ name: job-terraform-apply
 on: workflow_call
 
 jobs:
-  terraform-plan:
+  terraform-apply:
     timeout-minutes: 30
 
     runs-on: ubuntu-latest
