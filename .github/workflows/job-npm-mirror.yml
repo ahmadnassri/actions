@@ -9,18 +9,6 @@ on:
         default: latest
         type: string
 
-      node-version:
-        description: Node.js version
-        required: false
-        default: latest
-        type: string
-
-      os:
-        description: Operating System
-        required: false
-        default: ubuntu-latest
-        type: string
-
 jobs:
   npm-mirror:
     timeout-minutes: 5

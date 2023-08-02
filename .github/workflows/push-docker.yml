@@ -9,16 +9,6 @@ jobs:
   metadata:
     uses: ./.github/workflows/job-metadata.yml
 
-  image:
-    runs-on: ubuntu-latest
-
-    outputs:
-      name: ${{ steps.image.outputs.name }}
-
-    steps:
-      - id: image
-        run: echo "name=$(basename "${GITHUB_REPOSITORY/docker-//}")" >> "$GITHUB_OUTPUT"
-
   lint-commits:
     uses: ./.github/workflows/job-lint-commits.yml
 
@@ -45,45 +35,11 @@ jobs:
 
     uses: ./.github/workflows/job-semantic-release.yml
 
-  publish-strategy:
-    needs:
-      - metadata
-
-    timeout-minutes: 5
-
-    # only runs on main branch
-    if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
-
-    runs-on: ubuntu-latest
-
-    outputs:
-      matrix: ${{ steps.parse.outputs.matrix }}
-
-    steps:
-      - uses: actions/checkout@v3.5.3
-      - id: parse
-        run: echo "matrix=$(jq -c . < .github/publish-matrix.json)" >> "$GITHUB_OUTPUT"
-
   publish-docker:
-    needs:
-      - image
-      - release
-      - metadata
-      - publish-strategy
+    needs: release
 
-    if: ${{ needs.release.outputs.published == 'true' }}
-
-    name: ${{ format('publish to {0}', matrix.registry) || 'publish-step' }}
-
-    strategy:
-      matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
-
-    uses: ./.github/workflows/job-docker-build-push.yml
+    uses: ./.github/workflows/job-docker-publish.yml
     with:
-      name: ${{ needs.image.outputs.name }}
+      relase: ${{ needs.release.outputs.published == 'true' }}
       version: ${{ needs.release.outputs.release-version }}
       alias: ${{ needs.release.outputs.release-version-major }}
-      platforms: ${{ matrix.platforms }}
-      registry: ${{ matrix.registry }}
-    secrets:
-      password: ${{ secrets[format('{0}_TOKEN', matrix.id)] }}

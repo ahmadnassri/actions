@@ -15,11 +15,22 @@ on:
         default: ubuntu-latest
         type: string
 
+      name:
+        description: Job Name
+        required: false
+        type: string
+
+      with-browsers:
+        description: Run tests with browsers
+        required: false
+        default: false
+        type: boolean
+
 jobs:
   npm-test:
     timeout-minutes: 5
 
-    name: ${{ format('test on node-{0}/{1}', inputs.node-version, inputs.os) || 'test-step' }}
+    name: ${{ inputs.name || format('test on node-{0}/{1}', inputs.node-version, inputs.os) || 'test-step' }}
 
     runs-on: ${{ inputs.os }}
 
@@ -32,8 +43,17 @@ jobs:
 
       - uses: actions/setup-node@v3.7.0
         with:
+          registry-url: https://npm.pkg.github.com
           node-version: ${{ inputs.node-version }}
           cache: npm
 
+      - run: npx playwright install-deps
+        if: ${{ inputs.with-browsers }}
+
       - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - run: npm run test:ci
+        env:
+          WITH_BROWSERS: ${{ inputs.with-browsers }}

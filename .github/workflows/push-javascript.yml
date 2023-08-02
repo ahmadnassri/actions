@@ -1,4 +1,4 @@
-name: push-node-lib
+name: push-javascript
 
 on: workflow_call
 
@@ -8,22 +8,6 @@ concurrency:
 jobs:
   metadata:
     uses: ./.github/workflows/job-metadata.yml
-
-  docker:
-    runs-on: ubuntu-latest
-
-    outputs:
-      name: ${{ steps.image.outputs.name }}
-      exists: ${{ steps.dockerfile.outputs.exists }}
-
-    steps:
-      - uses: actions/checkout@v3.5.3
-
-      - id: dockerfile
-        run: echo "exists=$([[ -f "${{ github.workspace }}/Dockerfile" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-
-      - id: image
-        run: echo "name=$(basename "${GITHUB_REPOSITORY/docker-//}")" >> "$GITHUB_OUTPUT"
 
   lint-commits:
     uses: ./.github/workflows/job-lint-commits.yml
@@ -52,8 +36,10 @@ jobs:
 
     uses: ./.github/workflows/job-npm-test.yml
     with:
+      name: ${{ matrix.name }}
       os: ${{ matrix.os }}
       node-version: ${{ matrix.node-version }}
+      with-browsers: ${{ matrix.with-browsers }}
 
   release:
     needs:
@@ -74,7 +60,7 @@ jobs:
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
 
-  release-mirror:
+  npm-mirror:
     needs: release
 
     permissions:
@@ -86,33 +72,11 @@ jobs:
     with:
       version: ${{ needs.release.outputs.release-version }}
 
-  publish-strategy:
-    needs: docker
-
-    if: ${{ needs.docker.outputs.exists == 'true' }}
-
-    uses: ./.github/workflows/job-load-matrix.yml
-    with:
-      matrix: .github/publish-matrix.json
-
   publish-docker:
-    needs:
-      - docker
-      - release
-      - metadata
-      - publish-strategy
+    needs: release
 
-    if: ${{ needs.docker.outputs.exists == 'true' && needs.release.outputs.published == 'true' }}
-
-    strategy:
-      matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
-
-    uses: ./.github/workflows/job-docker-build-push.yml
+    uses: ./.github/workflows/job-docker-publish.yml
     with:
-      name: ${{ needs.docker.outputs.name }}
+      relase: ${{ needs.release.outputs.published == 'true' }}
       version: ${{ needs.release.outputs.release-version }}
       alias: ${{ needs.release.outputs.release-version-major }}
-      platforms: ${{ matrix.platforms }}
-      registry: ${{ matrix.registry }}
-    secrets:
-      password: ${{ secrets.GITHUB_TOKEN }}

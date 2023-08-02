@@ -1,0 +1,71 @@
+name: job-publish-docker
+
+on:
+  workflow_call:
+    inputs:
+      release:
+        description: flag if github release is done
+        default: false
+        type: boolean
+
+      version:
+        description: version to publish
+        required: true
+        type: string
+
+      alias:
+        description: major version to publish
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    if: ${{ inputs.release }}
+
+    outputs:
+      name: ${{ steps.image.outputs.name }}
+      exists: ${{ steps.dockerfile.outputs.exists }}
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - id: dockerfile
+        run: echo "exists=$([[ -f "${{ github.workspace }}/Dockerfile" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - id: image
+        run: echo "name=$(basename "${GITHUB_REPOSITORY/docker-//}")" >> "$GITHUB_OUTPUT"
+
+  publish-strategy:
+    needs: docker
+
+    if: ${{ needs.docker.outputs.exists == 'true' }}
+
+    uses: ./.github/workflows/job-load-matrix.yml
+    with:
+      matrix: .github/publish-matrix.json
+
+  publish-docker:
+    needs:
+      - docker
+      - publish-strategy
+
+    if: ${{ needs.docker.outputs.exists == 'true' }}
+
+    strategy:
+      matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
+
+    uses: ./.github/workflows/job-docker-build-push.yml
+    with:
+      name: ${{ needs.docker.outputs.name }}
+      version: ${{ inputs.version }}
+      alias: ${{ inputs.alias }}
+      platforms: ${{ matrix.platforms }}
+      registry: ${{ matrix.registry }}
+    secrets:
+      password: ${{ secrets[format('{0}_TOKEN', matrix.id)] }}
