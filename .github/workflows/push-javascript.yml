@@ -37,9 +37,9 @@ jobs:
     uses: ./.github/workflows/job-npm-test.yml
     with:
       name: ${{ matrix.name }}
-      os: ${{ matrix.os }}
-      node-version: ${{ matrix.node-version }}
-      with-browsers: ${{ matrix.with-browsers }}
+      os: ${{ matrix.os || 'latest' }}
+      node-version: ${{ matrix.node-version || 'latest' }}
+      with-browsers: ${{ matrix.with-browsers || false }}
 
   release:
     needs:
