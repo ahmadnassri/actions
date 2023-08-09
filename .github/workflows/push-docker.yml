@@ -40,6 +40,6 @@ jobs:
 
     uses: ./.github/workflows/job-docker-publish.yml
     with:
-      relase: ${{ needs.release.outputs.published == 'true' }}
+      release: ${{ needs.release.outputs.published == 'true' }}
       version: ${{ needs.release.outputs.release-version }}
       alias: ${{ needs.release.outputs.release-version-major }}
