@@ -9,11 +9,6 @@ jobs:
   metadata:
     uses: ./.github/workflows/job-metadata.yml
 
-  changed-files:
-    uses: ./.github/workflows/job-changed-files.yml
-    with:
-      pathspec: "*.tf *.hcl data.yml"
-
   lint-commits:
     uses: ./.github/workflows/job-lint-commits.yml
 
