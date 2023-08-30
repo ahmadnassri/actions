@@ -48,6 +48,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3.5.3
 
+      - id: package
+        run: echo "exists=$([[ -f "${{ github.workspace }}/package.json" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v3.8.0
+        if: ${{ steps.package.outputs.exists == 'true' }}
+        with:
+          registry-url: https://npm.pkg.github.com
+          cache: npm
+
+      - run: npm ci
+        if: ${{ steps.package.outputs.exists == 'true' }}
+
       - id: release
         uses: ahmadnassri/action-semantic-release@v2.2.6
         with:
