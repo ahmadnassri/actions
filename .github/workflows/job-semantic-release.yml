@@ -52,7 +52,7 @@ jobs:
         name: Check for package.json
         run: echo "exists=$([[ -f "${{ github.workspace }}/package.json" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-node@v3.8.0
+      - uses: actions/setup-node@v3.8.1
         if: ${{ steps.package.outputs.exists == 'true' }}
         with:
           registry-url: https://npm.pkg.github.com
