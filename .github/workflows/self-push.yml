@@ -1,0 +1,25 @@
+name: push
+
+on:
+  - push
+  - workflow_dispatch
+
+permissions: read-all
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
+jobs:
+  metadata:
+    uses: ./.github/workflows/job-metadata.yml
+
+  lint-commits:
+    uses: ./.github/workflows/job-lint-commits.yml
+
+  lint-content:
+    uses: ./.github/workflows/job-lint-documentation.yml
+
+    permissions:
+      contents: write
+      statuses: write
+      pull-requests: write
