@@ -39,6 +39,7 @@ jobs:
     needs: release
 
     uses: ./.github/workflows/job-docker-publish.yml
+    secrets: inherit
     with:
       release: ${{ needs.release.outputs.published == 'true' }}
       version: ${{ needs.release.outputs.release-version }}
