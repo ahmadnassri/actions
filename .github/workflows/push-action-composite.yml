@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/job-lint-commits.yml
 
   lint-content:
-    uses: ./.github/workflows/job-lint-documentation.yml
+    uses: ./.github/workflows/job-lint-ci.yml
 
     permissions:
       contents: write
