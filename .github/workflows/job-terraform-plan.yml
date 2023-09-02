@@ -17,7 +17,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v2.0.3
         with:
           terraform_wrapper: false
-          cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
+          cli_config_credentials_token: ${{ secrets.TOKEN_TERRAFORM }}
 
       - uses: actions/cache@v3.3.1
         with:
@@ -30,14 +30,14 @@ jobs:
       - run: terraform fmt -check module
       - run: terraform plan -lock=false -out terraform.plan
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.TOKEN_CLOUDFLARE }}
 
-          TF_VAR_TOKEN_CLOUDFLARE: ${{ secrets.CLOUDFLARE_TOKEN }}
-          TF_VAR_TOKEN_DOCKERHUB: ${{ secrets.DOCKER_TOKEN }}
-          TF_VAR_TOKEN_GITHUB: ${{ secrets.GH_TOKEN }}
-          TF_VAR_TOKEN_NPM: ${{ secrets.NPM_TOKEN }}
-          TF_VAR_TOKEN_TERRAFORM: ${{ secrets.TF_TOKEN }}
+          TF_VAR_TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
+          TF_VAR_TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
+          TF_VAR_TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          TF_VAR_TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
+          TF_VAR_TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
           TF_VAR_TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}
 
       # generate plain output

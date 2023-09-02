@@ -9,10 +9,10 @@ jobs:
   template-sync:
     uses: ./.github/workflows/job-template-sync.yml
     secrets:
-      github-token: ${{ secrets.GH_TOKEN }}
+      github-token: ${{ secrets.TOKEN_GITHUB }}
 
   auto-merge:
     needs: template-sync
     uses: ./.github/workflows/job-auto-merge.yml
     secrets:
-      github-token: ${{ secrets.GH_TOKEN }}
+      github-token: ${{ secrets.TOKEN_GITHUB }}
