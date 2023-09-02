@@ -64,4 +64,4 @@ jobs:
       platforms: ${{ matrix.platforms }}
       registry: ${{ matrix.registry }}
     secrets:
-      password: ${{ secrets[format('{0}_TOKEN', matrix.id)] }}
+      password: ${{ secrets[format('TOKEN_{0}', matrix.id)] }}
