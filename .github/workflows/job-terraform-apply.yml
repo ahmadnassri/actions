@@ -26,11 +26,9 @@ jobs:
       - run: terraform init
 
       - id: terraform-cloud
-        uses: ahmadnassri/action-terraform-cloud-api@v1.0.3
+        uses: ahmadnassri/action-terraform-cloud-api@v1.0.4
         with:
           token: ${{ secrets.TOKEN_TERRAFORM }}
-          organization: foobar
-          workspace: my-project
 
       - if: ${{ steps.terraform-cloud.outputs.workspace_locked == 'true' }}
         run: |
