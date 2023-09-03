@@ -1,0 +1,57 @@
+name: npm-publish
+
+on:
+  workflow_call:
+    secrets:
+      TOKEN_NPM:
+        description: NPM token
+        required: false
+
+      TOKEN_GITHUB:
+        description: GitHub Registry token
+        required: false
+
+    inputs:
+      version:
+        description: release version
+        required: true
+        default: latest
+        type: string
+
+      registry:
+        description: registry url
+        required: true
+        default: https://registry.npmjs.org
+        type: string
+
+      name:
+        description: package name
+        required: true
+        type: string
+
+jobs:
+  publish:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3.6.0
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v3.8.1
+        with:
+          registry-url: ${{ inputs.registry }}
+          node-version: latest
+
+      - name: publish to ${{ inputs.registry }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets[format('TOKEN_{0}', matrix.id)] }}
+        run: |
+          jq '.name = "@'"${{ inputs.name }}"'"' package.json > /tmp/package.json; mv /tmp/package.json .
+          npm version --no-git-tag-version "v${{ inputs.version }}"
+          npm publish

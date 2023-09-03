@@ -31,7 +31,7 @@ jobs:
   test-strategy:
     uses: ./.github/workflows/job-load-matrix.yml
     with:
-      matrix: .github/test-matrix.json
+      matrix: .github/matrix-test.json
 
   npm-test:
     needs: test-strategy
@@ -62,26 +62,30 @@ jobs:
     if: ${{ needs.metadata.outputs.repository_default_branch == github.ref_name }}
 
     uses: ./.github/workflows/job-semantic-release.yml
-    secrets:
-      TOKEN_NPM: ${{ secrets.NPM_TOKEN }}
 
-  npm-mirror:
-    needs: release
+  publish-strategy:
+    uses: ./.github/workflows/job-load-matrix.yml
+    with:
+      matrix: .github/matrix-publish.json
+
+  npm-publish:
+    needs:
+      - release
+      - publish-strategy
+
+    strategy:
+      matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
 
     permissions:
       packages: write
 
     if: ${{ needs.release.outputs.published == 'true' }}
 
-    uses: ./.github/workflows/job-npm-mirror.yml
+    uses: ./.github/workflows/job-npm-publish.yml
+    secrets:
+      TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
+      TOKEN_GITHUB: ${{ github.token }}
     with:
+      name: ${{ matrix.name }}
+      registry: ${{ matrix.registry }}
       version: ${{ needs.release.outputs.release-version }}
-
-  publish-docker:
-    needs: release
-
-    uses: ./.github/workflows/job-docker-publish.yml
-    with:
-      release: ${{ needs.release.outputs.published == 'true' }}
-      version: ${{ needs.release.outputs.release-version }}
-      alias: ${{ needs.release.outputs.release-version-major }}

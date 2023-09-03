@@ -2,15 +2,6 @@ name: semantic-release
 
 on:
   workflow_call:
-    secrets:
-      TOKEN_GITHUB:
-        description: GitHub Personal Access Token
-        required: false
-
-      TOKEN_NPM:
-        description: npm token
-        required: false
-
     outputs:
       published:
         description: true when release is successfully published
@@ -55,16 +46,17 @@ jobs:
       - uses: actions/setup-node@v3.8.1
         if: ${{ steps.package.outputs.exists == 'true' }}
         with:
-          registry-url: https://npm.pkg.github.com
           cache: npm
+          registry-url: https://npm.pkg.github.com
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
         if: ${{ steps.package.outputs.exists == 'true' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - id: release
         uses: ahmadnassri/action-semantic-release@v2.2.6
         with:
           config: ${{ github.workspace }}/.semantic.json
         env:
-          NPM_TOKEN: ${{ secrets.TOKEN_NPM }}
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
