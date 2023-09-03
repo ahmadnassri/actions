@@ -33,6 +33,7 @@ jobs:
     uses: ./.github/workflows/job-npm-audit.yml
 
   test-strategy:
+    name: load test matrix
     uses: ./.github/workflows/job-load-matrix.yml
     with:
       matrix: .github/matrix-test.json
@@ -68,6 +69,7 @@ jobs:
     uses: ./.github/workflows/job-semantic-release.yml
 
   publish-strategy:
+    name: load publish matrix
     uses: ./.github/workflows/job-load-matrix.yml
     with:
       matrix: .github/matrix-publish.json
