@@ -6,11 +6,12 @@ pull: ## pull latest containers
 lint: ## run mega-linter
 	@docker compose run --rm lint
 
-readme: ## run readme action
+readme: ## generate root README.md
 	@docker compose run --rm readme
 
-clean: ## remove running containers, volumes, node_modules & anything else
-	@docker compose rm --stop --volumes --force
+clean: ## delete containers, images, volumes
+	@docker compose rm --stop --force --volumes
+	@docker compose down --remove-orphans --volumes --rmi local
 
 # Utility methods
 ## Help: https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
