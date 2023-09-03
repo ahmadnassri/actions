@@ -3,13 +3,8 @@ name: npm-publish
 on:
   workflow_call:
     secrets:
-      TOKEN_NPM:
-        description: NPM token
-        required: false
-
-      TOKEN_GITHUB:
-        description: GitHub Registry token
-        required: false
+      token:
+        required: true
 
     inputs:
       version:
@@ -29,14 +24,19 @@ on:
         required: true
         type: string
 
+permissions:
+  packages: write
+
 jobs:
-  publish:
+  npm-publish:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest
 
     permissions:
       packages: write
+
+    name: publish to ${{ inputs.registry }}
 
     steps:
       - uses: actions/checkout@v3.6.0
@@ -50,7 +50,7 @@ jobs:
 
       - name: publish to ${{ inputs.registry }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets[format('TOKEN_{0}', matrix.id)] }}
+          NODE_AUTH_TOKEN: ${{ secrets.token }}
         run: |
           PACKAGE="$(jq --arg name "${{ inputs.name }}" '.name = $name' package.json)"
           echo -E "${PACKAGE}" > package.json
