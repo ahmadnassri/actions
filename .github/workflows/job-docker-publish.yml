@@ -59,9 +59,6 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
 
-    permissions:
-      packages: write
-
     if: ${{ needs.docker.outputs.exists == 'true' }}
 
     uses: ./.github/workflows/job-docker-build-push.yml
@@ -72,4 +69,4 @@ jobs:
       platforms: ${{ matrix.platforms }}
       registry: ${{ matrix.registry }}
     secrets:
-      password: ${{ secrets[format('TOKEN_{0}', matrix.id)] || github.token}}
+      password: ${{ secrets[format('TOKEN_{0}', matrix.id)] }}

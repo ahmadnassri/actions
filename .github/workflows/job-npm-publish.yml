@@ -24,17 +24,11 @@ on:
         required: true
         type: string
 
-permissions:
-  packages: write
-
 jobs:
   npm-publish:
     timeout-minutes: 5
 
     runs-on: ubuntu-latest
-
-    permissions:
-      packages: write
 
     name: publish to ${{ inputs.registry }}
 
