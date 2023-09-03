@@ -72,4 +72,4 @@ jobs:
       platforms: ${{ matrix.platforms }}
       registry: ${{ matrix.registry }}
     secrets:
-      password: ${{ matrix.id == 'GITHUB' && github.token || secrets[format('TOKEN_{0}', matrix.id)] }}
+      password: ${{ secrets[format('TOKEN_{0}', matrix.id)] || github.token}}
