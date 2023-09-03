@@ -52,6 +52,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets[format('TOKEN_{0}', matrix.id)] }}
         run: |
-          jq '.name = "@'"${{ inputs.name }}"'"' package.json > /tmp/package.json; mv /tmp/package.json .
+          PACKAGE="$(jq --arg name "${{ inputs.name }}" '.name = $name' package.json)"
+          echo -E "${PACKAGE}" > package.json
           npm version --no-git-tag-version "v${{ inputs.version }}"
           npm publish
