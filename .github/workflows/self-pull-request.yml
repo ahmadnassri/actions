@@ -7,4 +7,5 @@ permissions: read-all
 jobs:
   main:
     uses: ./.github/workflows/pull-request-target.yml
-    secrets: inherit
+    secrets:
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}

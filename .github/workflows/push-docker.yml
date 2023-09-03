@@ -1,6 +1,15 @@
 name: push-docker
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      TOKEN_DOCKERHUB:
+        description: Docker Hub API token
+        required: false
+
+      TOKEN_GITHUB:
+        description: GitHub PAT token
+        required: false
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -39,7 +48,9 @@ jobs:
     needs: release
 
     uses: ./.github/workflows/job-docker-publish.yml
-    secrets: inherit
+    secrets:
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
     with:
       release: ${{ needs.release.outputs.published == 'true' }}
       version: ${{ needs.release.outputs.release-version }}

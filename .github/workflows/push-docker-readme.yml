@@ -2,6 +2,11 @@ name: docker-push-readme
 
 on:
   workflow_call:
+    secrets:
+      TOKEN_DOCKERHUB:
+        description: Docker Hub API token
+        required: false
+
     inputs:
       username:
         type: string

@@ -66,4 +66,10 @@ jobs:
       needs.metadata.outputs.repository_default_branch == github.ref_name
 
     uses: ./.github/workflows/job-terraform-apply.yml
-    secrets: inherit
+    secrets:
+      TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
+      TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
+      TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
+      TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}

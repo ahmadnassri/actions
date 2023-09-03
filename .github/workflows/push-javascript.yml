@@ -1,6 +1,11 @@
 name: push-javascript
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      TOKEN_NPM:
+        description: NPM API token
+        required: false
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -58,7 +63,7 @@ jobs:
 
     uses: ./.github/workflows/job-semantic-release.yml
     secrets:
-      npm-token: ${{ secrets.NPM_TOKEN }}
+      TOKEN_NPM: ${{ secrets.NPM_TOKEN }}
 
   npm-mirror:
     needs: release

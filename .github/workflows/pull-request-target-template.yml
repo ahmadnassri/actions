@@ -1,6 +1,11 @@
 name: pull-request-target-template
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      TOKEN_GITHUB:
+        description: GitHub PAT token
+        required: false
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -9,10 +14,10 @@ jobs:
   template-sync:
     uses: ./.github/workflows/job-template-sync.yml
     secrets:
-      github-token: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
 
   auto-merge:
     needs: template-sync
     uses: ./.github/workflows/job-auto-merge.yml
     secrets:
-      github-token: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}

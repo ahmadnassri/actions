@@ -1,6 +1,31 @@
 name: pull-request-terraform
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      TOKEN_TERRAFORM:
+        description: Terraform Cloud API token
+        required: true
+
+      TOKEN_CLOUDFLARE:
+        description: Cloudflare API token
+        required: false
+
+      TOKEN_DOCKERHUB:
+        description: Docker Hub API token
+        required: false
+
+      TOKEN_GITHUB:
+        description: GitHub PAT token
+        required: false
+
+      TOKEN_NPM:
+        description: NPM API token
+        required: false
+
+      TOKEN_ROTATION:
+        description: Rotation Key
+        required: false
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -30,4 +55,10 @@ jobs:
       pull-requests: write
 
     uses: ./.github/workflows/job-terraform-plan.yml
-    secrets: inherit
+    secrets:
+      TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
+      TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
+      TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
+      TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}

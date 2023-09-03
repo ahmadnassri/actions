@@ -2,6 +2,15 @@ name: job-docker-publish
 
 on:
   workflow_call:
+    secrets:
+      TOKEN_DOCKERHUB:
+        description: Docker Hub API token
+        required: false
+
+      TOKEN_GITHUB:
+        description: GitHub PAT token
+        required: false
+
     inputs:
       release:
         description: flag if github release is done
