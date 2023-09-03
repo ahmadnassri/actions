@@ -87,7 +87,7 @@ jobs:
 
     uses: ./.github/workflows/job-npm-publish.yml
     secrets:
-      token: ${{ secrets[format('TOKEN_{0}', matrix.id)] }}
+      token: ${{ matrix.id == 'GITHUB' && github.token || secrets[format('TOKEN_{0}', matrix.id)] }}
     with:
       name: ${{ matrix.name }}
       registry: ${{ matrix.registry }}
