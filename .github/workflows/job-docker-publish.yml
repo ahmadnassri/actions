@@ -53,7 +53,7 @@ jobs:
 
     uses: ./.github/workflows/job-load-matrix.yml
     with:
-      matrix: .github/publish-matrix.json
+      matrix: .github/matrix-publish.json
 
   publish-docker:
     needs:
