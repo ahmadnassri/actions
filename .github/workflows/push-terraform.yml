@@ -1,4 +1,4 @@
-name: push-docker
+name: push-terraform
 
 on: workflow_call
 
