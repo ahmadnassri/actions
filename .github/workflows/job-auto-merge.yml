@@ -4,7 +4,7 @@ on:
   workflow_call:
     secrets:
       TOKEN_GITHUB:
-        # required to use a PAT instead of GITHUB_TOKEN to get signed commits on merge
+        # required to use a PAT instead of GITHUB_TOKEN to get signed commits on merge AND to trigger following workflows
         description: GitHub Personal Access Token
         required: true
 
