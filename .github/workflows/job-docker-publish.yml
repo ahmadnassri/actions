@@ -34,7 +34,7 @@ jobs:
       exists: ${{ steps.dockerfile.outputs.exists }}
 
     steps:
-      - uses: actions/checkout@v3.6.0
+      - uses: actions/checkout@v4.0.0
 
       - id: dockerfile
         run: echo "exists=$([[ -f "${{ github.workspace }}/Dockerfile" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
