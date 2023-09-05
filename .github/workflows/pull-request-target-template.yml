@@ -5,7 +5,7 @@ on:
     secrets:
       TOKEN_GITHUB:
         description: GitHub PAT token
-        required: false
+        required: true
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -19,5 +19,3 @@ jobs:
   auto-merge:
     needs: template-sync
     uses: ./.github/workflows/job-auto-merge.yml
-    secrets:
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
