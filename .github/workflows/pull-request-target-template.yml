@@ -19,3 +19,6 @@ jobs:
   auto-merge:
     needs: template-sync
     uses: ./.github/workflows/job-auto-merge.yml
+    permissions:
+      contents: write
+      pull-requests: write
