@@ -6,7 +6,7 @@ on:
       TOKEN_GITHUB:
         # useful to use a PAT instead of the default GITHUB_TOKEN to get signed commits on merge
         description: GitHub Personal Access Token
-        required: true
+        required: false
 
 jobs:
   auto-merge:
@@ -21,7 +21,7 @@ jobs:
       - id: dependabot
         uses: dependabot/fetch-metadata@v1.6.0
         with:
-          github-token: ${{ secrets.TOKEN_GITHUB }}
+          github-token: ${{ secrets.TOKEN_GITHUB || github.token }}
 
       - name: auto merge conditions
         id: auto-merge
@@ -35,7 +35,7 @@ jobs:
         if: ${{ steps.auto-merge.conclusion == 'success' }}
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GH_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
         run: |
           gh pr review --approve "$PR_URL"
           gh pr merge --auto --rebase "$PR_URL"
