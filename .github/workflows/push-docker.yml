@@ -7,10 +7,6 @@ on:
         description: Docker Hub API token
         required: false
 
-      TOKEN_GITHUB:
-        description: GitHub PAT token
-        required: false
-
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
 
