@@ -4,8 +4,9 @@ on: pull_request_target
 
 permissions: read-all
 
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
 jobs:
-  main:
-    uses: ./.github/workflows/pull-request-target.yml
-    secrets:
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+  auto-merge:
+    uses: ./.github/workflows/job-auto-merge.yml
