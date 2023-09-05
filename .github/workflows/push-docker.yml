@@ -49,7 +49,6 @@ jobs:
 
     uses: ./.github/workflows/job-docker-publish.yml
     secrets:
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
       TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
     with:
       release: ${{ needs.release.outputs.published == 'true' }}
