@@ -7,10 +7,6 @@ on:
         description: NPM API token
         required: false
 
-      TOKEN_GITHUB:
-        description: GitHub Registry token
-        required: false
-
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
 
@@ -82,11 +78,15 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
 
+    permissions:
+      contents: read
+      packages: write
+
     if: ${{ needs.release.outputs.published == 'true' }}
 
     uses: ./.github/workflows/job-npm-publish.yml
     secrets:
-      token: ${{ secrets[format('TOKEN_{0}', matrix.id)] }}
+      token: ${{ matrix.id == 'GITHUB' && secrets.GITHUB_TOKEN || secrets[format('TOKEN_{0}', matrix.id)] }}
     with:
       name: ${{ matrix.name }}
       registry: ${{ matrix.registry }}
