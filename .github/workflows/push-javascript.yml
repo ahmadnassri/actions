@@ -88,6 +88,6 @@ jobs:
     secrets:
       token: ${{ matrix.registry.id == 'GITHUB' && secrets.GITHUB_TOKEN || secrets[format('TOKEN_{0}', matrix.registry.id)] }}
     with:
-      name: ${{ matrix.registry.name || matrix.name }}
+      name: ${{ matrix.registry.name || matrix.name || format('@{0}', github.repository) }}
       registry: ${{ matrix.registry.url }}
       version: ${{ needs.release.outputs.release-version }}
