@@ -34,10 +34,16 @@ jobs:
   metadata:
     uses: ./.github/workflows/job-metadata.yml
 
+    permissions:
+      contents: read
+
   changed-files:
     uses: ./.github/workflows/job-changed-files.yml
     with:
       pathspec: "*.tf *.hcl data.yml"
+
+    permissions:
+      contents: read
 
   terraform-plan:
     needs:

@@ -15,6 +15,9 @@ on:
         description: Flag indicating if the repository is a template
         value: ${{ jobs.metadata.outputs.repository_is_template }}
 
+permissions:
+  contents: read
+
 jobs:
   metadata:
     timeout-minutes: 5
