@@ -39,7 +39,7 @@ jobs:
 
       - uses: actions/setup-node@v3.8.1
         with:
-          node-version: lts/*
+          node-version: latest
           registry-url: ${{ inputs.registry }}
 
       - name: publish to ${{ inputs.registry }}

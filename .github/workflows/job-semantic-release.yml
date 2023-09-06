@@ -47,7 +47,7 @@ jobs:
         if: ${{ steps.package.outputs.exists == 'true' }}
         with:
           cache: npm
-          node-version: lts/*
+          node-version: latest
           registry-url: https://npm.pkg.github.com
 
       - run: npm ci --ignore-scripts

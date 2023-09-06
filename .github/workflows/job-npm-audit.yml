@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v3.8.1
         with:
-          node-version: lts/*
+          node-version: latest
 
       - run: npm audit
         env:
