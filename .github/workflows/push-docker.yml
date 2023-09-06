@@ -43,6 +43,8 @@ jobs:
   publish-docker:
     needs: release
 
+    if: ${{ needs.release.outputs.published == 'true' }}
+
     uses: ./.github/workflows/job-docker-publish.yml
     secrets:
       TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
