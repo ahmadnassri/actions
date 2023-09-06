@@ -39,8 +39,8 @@ jobs:
 
       - uses: actions/setup-node@v3.8.1
         with:
+          node-version: lts/*
           registry-url: ${{ inputs.registry }}
-          node-version: latest
 
       - name: publish to ${{ inputs.registry }}
         env:
