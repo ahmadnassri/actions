@@ -47,6 +47,7 @@ jobs:
 
   terraform-plan:
     permissions:
+      contents: read
       pull-requests: write
 
     needs:
