@@ -53,7 +53,6 @@ jobs:
       - run: terraform init
       - run: terraform validate
       - run: terraform fmt -check
-      - run: terraform fmt -check module
       - run: terraform plan -lock=false -out terraform.plan
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
