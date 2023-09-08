@@ -41,6 +41,16 @@ on:
         description: release alias to publish
         required: true
 
+      description:
+        type: string
+        description: image description
+        required: false
+
+      license:
+        type: string
+        description: image license
+        required: false
+
 jobs:
   docker-build-push:
     timeout-minutes: 10
@@ -74,7 +84,10 @@ jobs:
             ${{ inputs.registry }}/${{ inputs.username }}/${{ inputs.name }}:${{ inputs.version }}
           labels: |
             org.opencontainers.image.title=${{ inputs.name }}
-            org.opencontainers.image.url=${{ github.event.repository.html_url }}
-            org.opencontainers.image.version=${{ inputs.version }}
-            org.opencontainers.image.source=${{ github.event.repository.html_url }}
+            org.opencontainers.image.description=${{ inputs.description }}
+            org.opencontainers.image.created=${{ github.event.repository.updated_at }}
+            org.opencontainers.image.licenses=${{ inputs.license }}
             org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ inputs.version }}
+            org.opencontainers.image.url=${{ github.event.repository.html_url }}
+            org.opencontainers.image.source=${{ github.event.repository.html_url }}

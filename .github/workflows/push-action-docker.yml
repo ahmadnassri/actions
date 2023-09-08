@@ -68,6 +68,8 @@ jobs:
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
       name: ${{ needs.image.outputs.name }}
+      description: ${{ needs.metadata.outputs.repository_description }}
+      license: ${{ needs.metadata.outputs.license_spdx_id }}
       version: ${{ needs.release.outputs.release-version }}
       alias: ${{ needs.release.outputs.release-version-major }}
       platforms: linux/amd64,linux/arm64

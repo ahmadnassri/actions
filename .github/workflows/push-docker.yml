@@ -40,15 +40,52 @@ jobs:
 
     uses: ./.github/workflows/job-semantic-release.yml
 
-  publish-docker:
-    needs: release
+  docker:
+    needs:
+      - release
 
     if: ${{ needs.release.outputs.published == 'true' }}
 
-    uses: ./.github/workflows/job-docker-publish.yml
-    secrets:
-      TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
+    runs-on: ubuntu-latest
+
+    outputs:
+      name: ${{ steps.image.outputs.name }}
+
+    steps:
+      - uses: actions/checkout@v4.0.0
+
+      - id: image
+        run: echo "name=$(basename "${GITHUB_REPOSITORY/docker-//}")" >> "$GITHUB_OUTPUT"
+
+  publish-strategy:
+    needs:
+      - release
+
+    if: ${{ needs.release.outputs.published == 'true' }}
+
+    uses: ./.github/workflows/job-load-matrix.yml
+
     with:
-      release: ${{ needs.release.outputs.published == 'true' }}
+      matrix: .github/matrix-publish.json
+
+  publish-docker:
+    needs:
+      - release
+      - docker
+      - metadata
+      - publish-strategy
+
+    strategy:
+      matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
+
+    uses: ./.github/workflows/job-docker-build-push.yml
+    with:
+      name: ${{ needs.docker.outputs.name }}
+      description: ${{ needs.metadata.outputs.repository_description }}
+      license: ${{ needs.metadata.outputs.license_spdx_id }}
       version: ${{ needs.release.outputs.release-version }}
       alias: ${{ needs.release.outputs.release-version-major }}
+      platforms: ${{ matrix.platforms }}
+      registry: ${{ matrix.registry.url }}
+    secrets:
+      password: ${{ matrix.registry.id == 'GITHUB' && secrets.GITHUB_TOKEN || secrets[format('TOKEN_{0}', matrix.registry.id)] }}
