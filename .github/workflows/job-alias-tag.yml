@@ -27,5 +27,6 @@ jobs:
         with:
           script: |
             const tag = 'tags/${{ inputs.name }}'
+            const sha = '${{ inputs.sha }}'
             await github.rest.git.deleteRef({ ...context.repo, ref: tag }).catch(() => {})
-            await github.rest.git.createRef({ ...context.repo, ref: `refs/${tag}` , sha: '${{ inputs.sha }}' })
+            await github.rest.git.createRef({ ...context.repo, ref: `refs/${tag}` , sha })
