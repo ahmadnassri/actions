@@ -3,9 +3,17 @@ name: metadata
 on:
   workflow_call:
     outputs:
+      license_spdx_id:
+        description: Repository license
+        value: ${{ jobs.metadata.outputs.license_spdx_id }}
+
       repository_name:
         description: Repository name
         value: ${{ jobs.metadata.outputs.repository_name }}
+
+      repository_description:
+        description: Repository description
+        value: ${{ jobs.metadata.outputs.repository_description }}
 
       repository_default_branch:
         description: Repository main/default branch
@@ -25,7 +33,9 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
+      license_spdx_id: ${{ steps.metadata.outputs.license_spdx_id }}
       repository_name: ${{ steps.metadata.outputs.repository_name }}
+      repository_description: ${{ steps.metadata.outputs.repository_description }}
       repository_is_template: ${{ steps.metadata.outputs.repository_is_template }}
       repository_default_branch: ${{ steps.metadata.outputs.repository_default_branch }}
 
