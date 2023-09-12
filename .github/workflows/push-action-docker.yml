@@ -63,6 +63,10 @@ jobs:
       - release
       - metadata
 
+    permissions:
+      contents: read
+      packages: write
+
     if: ${{ needs.release.outputs.published == 'true' }}
 
     uses: ./.github/workflows/job-docker-build-push.yml
@@ -75,7 +79,7 @@ jobs:
       platforms: linux/amd64,linux/arm64
       registry: ghcr.io
     secrets:
-      password: ${{ github.token}}
+      password: ${{ github.token }}
 
   alias:
     needs: release

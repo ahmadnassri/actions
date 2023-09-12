@@ -78,6 +78,10 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
 
+    permissions:
+      contents: read
+      packages: write
+
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
       name: ${{ needs.docker.outputs.name }}
