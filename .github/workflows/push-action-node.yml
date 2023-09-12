@@ -60,3 +60,4 @@ jobs:
     uses: ./.github/workflows/job-alias-tag.yml
     with:
       name: ${{ matrix.alias.version }}
+      sha: ${{ needs.release.outputs.last-release-git-head }}

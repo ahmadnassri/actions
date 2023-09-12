@@ -8,6 +8,11 @@ on:
         required: true
         type: string
 
+      sha:
+        description: The sha of the commit to use
+        required: true
+        type: string
+
 permissions:
   contents: write
 
@@ -23,4 +28,4 @@ jobs:
           script: |
             const tag = 'tags/${{ inputs.name }}'
             await github.rest.git.deleteRef({ ...context.repo, ref: tag }).catch(() => {})
-            await github.rest.git.createRef({ ...context.repo, ref: `refs/${tag}` , sha: process.env.GITHUB_SHA })
+            await github.rest.git.createRef({ ...context.repo, ref: `refs/${tag}` , sha: '${{ inputs.sha }}' })
