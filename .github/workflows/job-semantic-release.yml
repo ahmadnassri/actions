@@ -19,9 +19,9 @@ on:
         description: last release version minor component
         value: ${{ jobs.semantic-release.outputs.release-version-minor }}
 
-      last-release-git-head:
+      release-git-head:
         description: last release sha
-        value: ${{ jobs.semantic-release.outputs.last-release-git-head }}
+        value: ${{ jobs.semantic-release.outputs.release-git-head	}}
 
 permissions:
   contents: write
@@ -39,7 +39,7 @@ jobs:
       release-version: ${{ steps.release.outputs.release-version }}
       release-version-major: ${{ steps.release.outputs.release-version-major }}
       release-version-minor: ${{ steps.release.outputs.release-version-minor }}
-      last-release-git-head: ${{ steps.release.outputs.last-release-git-head }}
+      release-git-head: ${{ steps.release.outputs.release-git-head	}}
 
     steps:
       - uses: actions/checkout@v4.0.0
