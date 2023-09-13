@@ -40,23 +40,6 @@ jobs:
 
     uses: ./.github/workflows/job-semantic-release.yml
 
-  docker:
-    needs:
-      - release
-
-    if: ${{ needs.release.outputs.published == 'true' }}
-
-    runs-on: ubuntu-latest
-
-    outputs:
-      name: ${{ steps.image.outputs.name }}
-
-    steps:
-      - uses: actions/checkout@v4.0.0
-
-      - id: image
-        run: echo "name=$(basename "${GITHUB_REPOSITORY/docker-//}")" >> "$GITHUB_OUTPUT"
-
   publish-strategy:
     needs:
       - release
@@ -71,7 +54,6 @@ jobs:
   publish-docker:
     needs:
       - release
-      - docker
       - metadata
       - publish-strategy
 
@@ -84,7 +66,7 @@ jobs:
 
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
-      name: ${{ needs.docker.outputs.name }}
+      name: ${{ matrix.registry.name || matrix.name || github.repository }}
       description: ${{ needs.metadata.outputs.repository_description }}
       license: ${{ needs.metadata.outputs.license_spdx_id }}
       version: ${{ needs.release.outputs.release-version }}
