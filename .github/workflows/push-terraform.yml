@@ -19,6 +19,10 @@ on:
         description: GitHub PAT token
         required: false
 
+      TOKEN_GOOGLE:
+        description: Google Credentials
+        required: false
+
       TOKEN_NPM:
         description: NPM API token
         required: false
@@ -37,7 +41,7 @@ jobs:
   changed-files:
     uses: ./.github/workflows/job-changed-files.yml
     with:
-      pathspec: "*.tf *.hcl data.yml"
+      pathspec: '*.tf *.hcl data.yml'
 
   lint-commits:
     uses: ./.github/workflows/job-lint-commits.yml
@@ -67,9 +71,10 @@ jobs:
 
     uses: ./.github/workflows/job-terraform-apply.yml
     secrets:
-      TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
       TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
       TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
       TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_GOOGLE: ${{ secrets.TOKEN_GOOGLE }}
       TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
+      TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
       TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}

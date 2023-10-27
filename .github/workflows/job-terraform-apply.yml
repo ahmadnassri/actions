@@ -19,6 +19,10 @@ on:
         description: GitHub PAT token
         required: false
 
+      TOKEN_GOOGLE:
+        description: Google Credentials
+        required: false
+
       TOKEN_NPM:
         description: NPM API token
         required: false
@@ -70,6 +74,7 @@ jobs:
           TF_VAR_TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
           TF_VAR_TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
           TF_VAR_TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          TF_VAR_TOKEN_GOOGLE: ${{ secrets.TOKEN_GOOGLE }}
           TF_VAR_TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
           TF_VAR_TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
           TF_VAR_TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}
