@@ -21,7 +21,7 @@ on:
 
       release-git-head:
         description: last release sha
-        value: ${{ jobs.semantic-release.outputs.release-git-head	}}
+        value: ${{ jobs.semantic-release.outputs.release-git-head }}
 
 permissions:
   contents: write
