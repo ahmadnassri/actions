@@ -39,7 +39,7 @@ jobs:
       release-version: ${{ steps.release.outputs.release-version }}
       release-version-major: ${{ steps.release.outputs.release-version-major }}
       release-version-minor: ${{ steps.release.outputs.release-version-minor }}
-      release-git-head: ${{ steps.release.outputs.release-git-head	}}
+      release-git-head: ${{ steps.release.outputs.release-git-head }}
 
     steps:
       - uses: actions/checkout@v4.0.0
