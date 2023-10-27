@@ -68,13 +68,12 @@ jobs:
       - run: terraform apply -auto-approve
         if: ${{ steps.terraform-cloud.outputs.workspace_locked == 'false' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.TOKEN_CLOUDFLARE }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GOOGLE_CREDENTIALS: ${{ secrets.TOKEN_GOOGLE }}
 
-          TF_VAR_TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
           TF_VAR_TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
           TF_VAR_TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-          TF_VAR_TOKEN_GOOGLE: ${{ secrets.TOKEN_GOOGLE }}
           TF_VAR_TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
           TF_VAR_TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
           TF_VAR_TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}
