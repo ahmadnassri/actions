@@ -41,7 +41,7 @@ jobs:
 
       - uses: ahmadnassri/action-dotenv@v1.0.3
 
-      - uses: actions/setup-node@v4.0.0
+      - uses: actions/setup-node@v4.0.2
         with:
           registry-url: https://npm.pkg.github.com
           node-version: ${{ inputs.node-version }}
