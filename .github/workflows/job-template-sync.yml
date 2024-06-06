@@ -18,6 +18,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - uses: ahmadnassri/action-template-repository-sync@v2.5.0
+      - uses: ahmadnassri/action-template-repository-sync@v2.6.1
         with:
           github-token: ${{ secrets.TOKEN_GITHUB }}
