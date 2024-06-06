@@ -72,6 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
           GOOGLE_CREDENTIALS: ${{ secrets.TOKEN_GOOGLE }}
 
+          TF_VAR_TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
           TF_VAR_TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
           TF_VAR_TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           TF_VAR_TOKEN_NPM: ${{ secrets.TOKEN_NPM }}

@@ -74,7 +74,6 @@ jobs:
       TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
       TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
       TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-      TOKEN_GOOGLE: ${{ secrets.TOKEN_GOOGLE }}
       TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
       TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
       TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}
