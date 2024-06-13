@@ -35,7 +35,7 @@ jobs:
     runs-on: ${{ inputs.os }}
 
     steps:
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
         with:
           submodules: true
 
