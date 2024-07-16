@@ -39,7 +39,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: ahmadnassri/action-dotenv@v1.0.3
+      - uses: ahmadnassri/action-dotenv@v1.0.4
 
       - uses: actions/setup-node@v4.0.3
         with:
