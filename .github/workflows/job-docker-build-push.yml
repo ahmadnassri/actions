@@ -77,7 +77,7 @@ jobs:
           password: ${{ secrets.password }}
 
       # publish
-      - uses: docker/build-push-action@v5.4.0
+      - uses: docker/build-push-action@v6.7.0
         with:
           push: true
           cache-from: type=gha
