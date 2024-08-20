@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.7
 
-      - uses: hashicorp/setup-terraform@v3.1.1
+      - uses: hashicorp/setup-terraform@v3.1.2
         with:
           terraform_wrapper: false
           cli_config_credentials_token: ${{ secrets.TOKEN_TERRAFORM }}
