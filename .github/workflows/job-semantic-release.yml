@@ -48,7 +48,7 @@ jobs:
         name: Check for package.json
         run: echo "exists=$([[ -f "${{ github.workspace }}/package.json" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-node@v4.0.3
+      - uses: actions/setup-node@v4.0.4
         if: ${{ steps.package.outputs.exists == 'true' }}
         with:
           cache: npm
