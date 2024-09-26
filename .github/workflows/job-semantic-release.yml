@@ -42,7 +42,7 @@ jobs:
       release-git-head: ${{ steps.release.outputs.release-git-head }}
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
 
       - id: package
         name: Check for package.json
