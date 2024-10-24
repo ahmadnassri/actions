@@ -23,7 +23,7 @@ jobs:
       matrix: ${{ steps.parser.outputs.matrix }}
 
     steps:
-      - uses: actions/checkout@v4.2.1
+      - uses: actions/checkout@v4.2.2
 
       - id: parser
         run: echo "matrix=$(jq -c . < ${{ inputs.matrix }})" >> "$GITHUB_OUTPUT"
