@@ -62,6 +62,6 @@ jobs:
       license: ${{ needs.metadata.outputs.license_spdx_id }}
       version: ${{ needs.release.outputs.release-git-tag }}
       platforms: ${{ fromJson(needs.publish-config.outputs.json).platforms }}
-      registries: ${{ fromJson(needs.publish-config.outputs.json).registries }}
+      registries: ${{ toJSON(fromJson(needs.publish-config.outputs.json).registries) }}
     secrets:
       TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
