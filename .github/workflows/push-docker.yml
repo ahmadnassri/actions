@@ -58,7 +58,6 @@ jobs:
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
       name: ${{ fromJson(needs.publish-config.outputs.json).name || needs.metadata.outputs.repository_name }}
-      description: ${{ needs.metadata.outputs.repository_description }}
       license: ${{ needs.metadata.outputs.license_spdx_id }}
       version: ${{ needs.release.outputs.release-git-tag }}
       platforms: ${{ fromJson(needs.publish-config.outputs.json).platforms }}

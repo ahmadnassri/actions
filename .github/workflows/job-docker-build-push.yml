@@ -29,11 +29,6 @@ on:
         description: release to publish
         required: true
 
-      description:
-        type: string
-        description: image description
-        required: false
-
       license:
         type: string
         description: image license
@@ -85,15 +80,9 @@ jobs:
           flavor: |
             latest=true
           labels: |
+            org.opencontainers.image.title=${{ inputs.name }}
             org.opencontainers.image.licenses=${{ inputs.license }}
-
-          #   org.opencontainers.image.title=${{ inputs.name }}
-          #   org.opencontainers.image.description=${{ inputs.description }}
-          #   org.opencontainers.image.created=${{ github.event.repository.updated_at }}
-          #   org.opencontainers.image.revision=${{ github.sha }}
-          #   org.opencontainers.image.version=${{ inputs.version }}
-          #   org.opencontainers.image.url=${{ github.event.repository.html_url }}
-          #   org.opencontainers.image.source=${{ github.event.repository.html_url }}
+            org.opencontainers.image.authors=github.com/${{ github.repository_owner }}
 
       # publish
       - uses: docker/build-push-action@v5.4.0
@@ -108,4 +97,5 @@ jobs:
           secrets: ${{ inputs.secrets }}
           tags: ${{ steps.meta.outputs.tags }}
           annotations: ${{ steps.meta.outputs.annotations }}
+          labels: ${{ steps.meta.outputs.labels }}
 
