@@ -64,12 +64,9 @@ jobs:
       name: ${{ needs.metadata.outputs.repository_name }}
       description: ${{ needs.metadata.outputs.repository_description }}
       license: ${{ needs.metadata.outputs.license_spdx_id }}
-      version: ${{ needs.release.outputs.release-version }}
-      alias: ${{ needs.release.outputs.release-version-major }}
+      version: ${{ needs.release.outputs.release-git-tag }}
       platforms: linux/amd64,linux/arm64
-      registry: ghcr.io
-    secrets:
-      password: ${{ secrets.GITHUB_TOKEN }}
+      registries: ghcr.io
 
   alias:
     needs: release

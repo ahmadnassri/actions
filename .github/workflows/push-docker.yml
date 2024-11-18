@@ -40,25 +40,21 @@ jobs:
 
     uses: ./.github/workflows/job-semantic-release.yml
 
-  publish-strategy:
+  publish-config:
     needs:
       - release
 
     if: ${{ needs.release.outputs.published == 'true' }}
 
-    uses: ./.github/workflows/job-load-matrix.yml
-
+    uses: ./.github/workflows/job-parse-json.yml
     with:
-      matrix: .github/matrix-publish.json
+      file: .github/docker-config.json
 
   publish-docker:
     needs:
       - release
       - metadata
-      - publish-strategy
-
-    strategy:
-      matrix: ${{ fromJSON(needs.publish-strategy.outputs.matrix) }}
+      - publish-config
 
     permissions:
       contents: read
@@ -66,12 +62,11 @@ jobs:
 
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
-      name: ${{ matrix.registry.name || matrix.name || needs.metadata.outputs.repository_name }}
+      name: ${{ fromJson(needs.publish-config.outputs.json).name || needs.metadata.outputs.repository_name }}
       description: ${{ needs.metadata.outputs.repository_description }}
       license: ${{ needs.metadata.outputs.license_spdx_id }}
-      version: ${{ needs.release.outputs.release-version }}
-      alias: ${{ needs.release.outputs.release-version-major }}
-      platforms: ${{ matrix.platforms }}
-      registry: ${{ matrix.registry.url }}
+      version: ${{ needs.release.outputs.release-git-tag }}
+      platforms: ${{ fromJson(needs.publish-config.outputs.json).platforms }}
+      registries: ${{ fromJson(needs.publish-config.outputs.json).registries }}
     secrets:
-      password: ${{ matrix.registry.id == 'GITHUB' && secrets.GITHUB_TOKEN || secrets[format('TOKEN_{0}', matrix.registry.id)] }}
+      TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
