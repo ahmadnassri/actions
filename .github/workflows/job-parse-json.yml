@@ -1,0 +1,29 @@
+name: parse-json
+
+on:
+  workflow_call:
+    inputs:
+      file:
+        description: The file name
+        required: true
+        type: string
+
+    outputs:
+      json:
+        description: The json content
+        value: ${{ jobs.parse-config.outputs.json }}
+
+jobs:
+  parse-config:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      json: ${{ steps.parser.outputs.json }}
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - id: parser
+        run: echo "json=$(jq -c . < ${{ inputs.file }})" >> "$GITHUB_OUTPUT"
