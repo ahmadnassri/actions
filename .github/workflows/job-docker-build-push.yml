@@ -58,7 +58,7 @@ on:
 
 jobs:
   docker-build-push:
-    timeout-minutes: 10
+    timeout-minutes: 30
 
     name: ${{ format('publish to {0}', inputs.registry) || 'publish-step' }}
 
