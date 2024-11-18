@@ -7,20 +7,24 @@ on:
         description: true when release is successfully published
         value: ${{ jobs.semantic-release.outputs.published }}
 
+      release-git-tag:
+        description: The git tag of the release
+        value: ${{ jobs.semantic-release.outputs.release-git-tag }}
+
       release-version:
-        description: The version of the last release
+        description: The version of the release
         value: ${{ jobs.semantic-release.outputs.release-version }}
 
       release-version-major:
-        description: last release version major component
+        description: release version major component
         value: ${{ jobs.semantic-release.outputs.release-version-major }}
 
       release-version-minor:
-        description: last release version minor component
+        description: release version minor component
         value: ${{ jobs.semantic-release.outputs.release-version-minor }}
 
       release-git-head:
-        description: last release sha
+        description: release sha
         value: ${{ jobs.semantic-release.outputs.release-git-head }}
 
 permissions:
@@ -40,6 +44,7 @@ jobs:
       release-version-major: ${{ steps.release.outputs.release-version-major }}
       release-version-minor: ${{ steps.release.outputs.release-version-minor }}
       release-git-head: ${{ steps.release.outputs.release-git-head }}
+      release-git-tag: ${{ steps.release.outputs.release-git-tag }}
 
     steps:
       - uses: actions/checkout@v4.2.2
