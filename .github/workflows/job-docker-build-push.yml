@@ -72,7 +72,7 @@ jobs:
           password: ${{ secrets.TOKEN_DOCKERHUB }}
 
       # extract metadata and prepare tags
-      - uses: docker/metadata-action@v5
+      - uses: docker/metadata-action@v5.5.1
         id: meta
         with:
           images: |
@@ -83,7 +83,7 @@ jobs:
             type=semver,pattern={{major}},value=${{ inputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ inputs.version }}
           flavor: |
-            latest=yes
+            latest=true
           labels: |
             org.opencontainers.image.licenses=${{ inputs.license }}
 
