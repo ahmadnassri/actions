@@ -72,7 +72,7 @@ jobs:
         with:
           images: |
             ${{ contains(fromJSON(inputs.registries), 'ghcr.io') && format('ghcr.io/{0}/{1}', github.repository_owner, inputs.name) || '' }}
-            ${{ contains(fromJSON(inputs.registries), 'docker.io') && format('docker.io/{0}/{1}', 'ghcr.io', github.repository_owner, inputs.name) || '' }}
+            ${{ contains(fromJSON(inputs.registries), 'docker.io') && format('docker.io/{0}/{1}', github.repository_owner, inputs.name) || '' }}
           tags: |
             type=semver,pattern={{version}},value=${{ inputs.version }}
             type=semver,pattern={{major}},value=${{ inputs.version }}
