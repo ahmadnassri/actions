@@ -67,7 +67,7 @@ jobs:
           password: ${{ secrets.TOKEN_DOCKERHUB }}
 
       # extract metadata and prepare tags
-      - uses: docker/metadata-action@v5.5.1
+      - uses: docker/metadata-action@v5.6.0
         id: meta
         with:
           images: |
