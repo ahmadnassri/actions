@@ -44,8 +44,8 @@ jobs:
           export-env: false
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
-          TOKEN_GITHUB: op://Tokens/GitHub/accounts/${{ github.repository_owner	}}
-          TOKEN_NPM: op://Tokens/NPM/accounts/${{ github.repository_owner	}}
+          TOKEN_GITHUB: op://Tokens/GitHub/accounts/${{ github.repository_owner }}
+          TOKEN_NPM: op://Tokens/NPM/accounts/${{ github.repository_owner }}
 
       - uses: actions/setup-node@v4.1.0
         with:
