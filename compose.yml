@@ -1,7 +1,7 @@
 services:
   # ---- mega-linter ---- #
   lint:
-    image: oxsecurity/megalinter-ci_light:v8.2.0
+    image: oxsecurity/megalinter-ci_light:v8.3.0
     volumes:
       - ./:/tmp/lint
     environment:
