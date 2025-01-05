@@ -23,7 +23,7 @@ jobs:
           export-env: false
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
-          TOKEN_GITHUB: op://Tokens/GitHub/fine-grained/${{ github.repository_owner }}
+          TOKEN_GITHUB: op://Tokens/GitHub/accounts/${{ github.repository_owner }}
 
       - uses: dependabot/fetch-metadata@v2.2.0
         id: dependabot

@@ -20,7 +20,7 @@ jobs:
           export-env: false
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
-          TOKEN_GITHUB: op://Tokens/GitHub/fine-grained/${{ github.repository_owner }}
+          TOKEN_GITHUB: op://Tokens/GitHub/accounts/${{ github.repository_owner }}
 
       - uses: actions/checkout@v4.2.2
         with:
