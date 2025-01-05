@@ -22,11 +22,3 @@ jobs:
           MEGALINTER_CONFIG: .github/linters/.mega-linter.yml
           GITHUB_COMMENT_REPORTER: true
           GITHUB_STATUS_REPORTER: true
-
-      - uses: actions/upload-artifact@v4.5.0
-        if: ${{ success() }} || ${{ failure() }}
-        with:
-          name: mega-linter-reports
-          path: |
-            megalinter-reports
-            mega-linter.log
