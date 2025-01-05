@@ -3,29 +3,9 @@ name: job-terraform-plan
 on:
   workflow_call:
     secrets:
-      TOKEN_TERRAFORM:
-        description: Terraform Cloud API token
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
         required: true
-
-      TOKEN_CLOUDFLARE:
-        description: Cloudflare API token
-        required: false
-
-      TOKEN_DOCKERHUB:
-        description: Docker Hub API token
-        required: false
-
-      TOKEN_GITHUB:
-        description: GitHub PAT token
-        required: false
-
-      TOKEN_GOOGLE:
-        description: Google Credentials
-        required: false
-
-      TOKEN_NPM:
-        description: NPM API token
-        required: false
 
       TOKEN_ROTATION:
         description: Rotation Key
@@ -44,10 +24,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
+      - uses: 1password/load-secrets-action@v2
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
+          TOKEN_GITHUB: op://Tokens/GitHub/fine-grained/${{ github.repository_owner	}}
+          TOKEN_CLOUDFLARE: op://Tokens/Cloudflare/accounts/${{ github.repository_owner	}}
+          TOKEN_TERRAFORM: op://Tokens/Terraform/orgs/${{ github.repository_owner	}}
+
       - uses: hashicorp/setup-terraform@v3.1.2
         with:
           terraform_wrapper: false
-          cli_config_credentials_token: ${{ secrets.TOKEN_TERRAFORM }}
+          cli_config_credentials_token: ${{ steps.secrets.outputs.TOKEN_TERRAFORM }}
 
       - uses: actions/cache@v4.2.0
         with:
@@ -59,14 +49,10 @@ jobs:
       - run: terraform fmt -check
       - run: terraform plan -lock=false -out terraform.plan
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.TOKEN_CLOUDFLARE }}
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
-          GOOGLE_CREDENTIALS: ${{ secrets.TOKEN_GOOGLE }}
+          GITHUB_TOKEN: ${{ steps.secrets.outputs.TOKEN_GITHUB }}
+          CLOUDFLARE_API_TOKEN: ${{ steps.secrets.outputs.TOKEN_CLOUDFLARE }}
 
-          TF_VAR_TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
-          TF_VAR_TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-          TF_VAR_TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
-          TF_VAR_TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
+          TF_VAR_TOKEN_1PASSWORD: ${{ secrets.TOKEN_1PASSWORD }}
           TF_VAR_TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}
 
       # generate plain output

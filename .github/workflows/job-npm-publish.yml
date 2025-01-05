@@ -3,7 +3,8 @@ name: npm-publish
 on:
   workflow_call:
     secrets:
-      token:
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
         required: true
 
     inputs:
@@ -37,6 +38,15 @@ jobs:
         with:
           submodules: true
 
+      - uses: 1password/load-secrets-action@v2
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
+          TOKEN_GITHUB: op://Tokens/GitHub/accounts/${{ github.repository_owner	}}
+          TOKEN_NPM: op://Tokens/NPM/accounts/${{ github.repository_owner	}}
+
       - uses: actions/setup-node@v4.1.0
         with:
           node-version: latest
@@ -44,7 +54,7 @@ jobs:
 
       - name: publish to ${{ inputs.registry }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.token }}
+          NODE_AUTH_TOKEN: ${{ steps.secrets.outputs[contains('github.com', inputs.registry) && 'TOKEN_GITHUB' || 'TOKEN_NPM'] }}
         run: |
           PACKAGE="$(jq --arg name "${{ inputs.name }}" '.name = $name' package.json)"
           echo -E "${PACKAGE}" > package.json

@@ -3,9 +3,8 @@ name: auto-merge
 on:
   workflow_call:
     secrets:
-      TOKEN_GITHUB:
-        # required to use a PAT instead of GITHUB_TOKEN to get signed commits on merge AND to trigger following workflows
-        description: GitHub Personal Access Token
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
         required: true
 
 jobs:
@@ -18,10 +17,18 @@ jobs:
     if: ${{ github.actor == 'dependabot[bot]' }}
 
     steps:
-      - id: dependabot
-        uses: dependabot/fetch-metadata@v2.2.0
+      - uses: 1password/load-secrets-action@v2
+        id: secrets
         with:
-          github-token: ${{ secrets.TOKEN_GITHUB }}
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
+          TOKEN_GITHUB: op://Tokens/GitHub/fine-grained/${{ github.repository_owner	}}
+
+      - uses: dependabot/fetch-metadata@v2.2.0
+        id: dependabot
+        with:
+          github-token: ${{ steps.secrets.outputs.TOKEN_GITHUB }}
 
       - name: auto merge conditions
         id: auto-merge
@@ -35,7 +42,7 @@ jobs:
         if: ${{ steps.auto-merge.conclusion == 'success' }}
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GH_TOKEN: ${{ steps.secrets.outputs.TOKEN_GITHUB }}
         run: |
           gh pr review --approve "$PR_URL"
           gh pr merge --auto --rebase "$PR_URL"

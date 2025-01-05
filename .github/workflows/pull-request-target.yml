@@ -3,8 +3,8 @@ name: pull-request-target
 on:
   workflow_call:
     secrets:
-      TOKEN_GITHUB:
-        description: GitHub Personal Access Token
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
         required: true
 
 concurrency:
@@ -14,4 +14,4 @@ jobs:
   auto-merge:
     uses: ./.github/workflows/job-auto-merge.yml
     secrets:
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_1PASSWORD: ${{ secrets.TOKEN_1PASSWORD }}

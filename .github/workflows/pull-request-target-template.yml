@@ -3,8 +3,8 @@ name: pull-request-target-template
 on:
   workflow_call:
     secrets:
-      TOKEN_GITHUB:
-        description: GitHub PAT token
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
         required: true
 
 concurrency:
@@ -14,10 +14,10 @@ jobs:
   template-sync:
     uses: ./.github/workflows/job-template-sync.yml
     secrets:
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_1PASSWORD: ${{ secrets.TOKEN_1PASSWORD }}
 
   auto-merge:
     needs: template-sync
     uses: ./.github/workflows/job-auto-merge.yml
     secrets:
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_1PASSWORD: ${{ secrets.TOKEN_1PASSWORD }}

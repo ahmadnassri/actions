@@ -3,8 +3,8 @@ name: template-sync
 on:
   workflow_call:
     secrets:
-      TOKEN_GITHUB:
-        description: GitHub Personal Access Token
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
         required: true
 
 jobs:
@@ -14,10 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: 1password/load-secrets-action@v2
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
+          TOKEN_GITHUB: op://Tokens/GitHub/fine-grained/${{ github.repository_owner	}}
+
       - uses: actions/checkout@v4.2.2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - uses: ahmadnassri/action-template-repository-sync@v2.6.3
         with:
-          github-token: ${{ secrets.TOKEN_GITHUB }}
+          github-token: ${{ steps.secrets.outputs.TOKEN_GITHUB }}

@@ -3,29 +3,9 @@ name: pull-request-terraform
 on:
   workflow_call:
     secrets:
-      TOKEN_TERRAFORM:
-        description: Terraform Cloud API token
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
         required: true
-
-      TOKEN_CLOUDFLARE:
-        description: Cloudflare API token
-        required: false
-
-      TOKEN_DOCKERHUB:
-        description: Docker Hub API token
-        required: false
-
-      TOKEN_GITHUB:
-        description: GitHub PAT token
-        required: false
-
-      TOKEN_NPM:
-        description: NPM API token
-        required: false
-
-      TOKEN_GOOGLE:
-        description: Google Credentials
-        required: false
 
       TOKEN_ROTATION:
         description: Rotation Key
@@ -47,7 +27,7 @@ jobs:
 
     uses: ./.github/workflows/job-changed-files.yml
     with:
-      pathspec: '*.tf *.hcl data.yml'
+      pathspec: "*.tf *.hcl data.yml"
 
   terraform-plan:
     permissions:
@@ -65,10 +45,5 @@ jobs:
 
     uses: ./.github/workflows/job-terraform-plan.yml
     secrets:
-      TOKEN_CLOUDFLARE: ${{ secrets.TOKEN_CLOUDFLARE }}
-      TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-      TOKEN_GOOGLE: ${{ secrets.TOKEN_GOOGLE }}
-      TOKEN_NPM: ${{ secrets.TOKEN_NPM }}
-      TOKEN_TERRAFORM: ${{ secrets.TOKEN_TERRAFORM }}
+      TOKEN_1PASSWORD: ${{ secrets.TOKEN_1PASSWORD }}
       TOKEN_ROTATION: ${{ secrets.TOKEN_ROTATION }}

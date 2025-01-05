@@ -3,9 +3,9 @@ name: push-docker
 on:
   workflow_call:
     secrets:
-      TOKEN_DOCKERHUB:
-        description: Docker Hub API token
-        required: false
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
+        required: true
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -65,4 +65,4 @@ jobs:
       platforms: ${{ fromJson(needs.publish-config.outputs.json).platforms }}
       registries: ${{ toJSON(fromJson(needs.publish-config.outputs.json).registries) }}
     secrets:
-      TOKEN_DOCKERHUB: ${{ secrets.TOKEN_DOCKERHUB }}
+      TOKEN_1PASSWORD: ${{ secrets.TOKEN_1PASSWORD }}

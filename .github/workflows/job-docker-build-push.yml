@@ -3,8 +3,8 @@ name: docker-build-push
 on:
   workflow_call:
     secrets:
-      TOKEN_DOCKERHUB:
-        description: docker hub token
+      TOKEN_1PASSWORD:
+        description: 1Password service account token
         required: false
 
     inputs:
@@ -50,6 +50,16 @@ jobs:
       - uses: docker/setup-qemu-action@v3.2.0
       - uses: docker/setup-buildx-action@v3.8.0
 
+      # optionally load secrets from 1password
+      - uses: 1password/load-secrets-action@v2
+        if: ${{ contains(fromJSON(inputs.registries), 'docker.io') }}
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
+          TOKEN_DOCKER: op://Tokens/Docker/credential
+
       # login to github registry
       - uses: docker/login-action@v3.3.0
         if: ${{ contains(fromJSON(inputs.registries), 'ghcr.io') }}
@@ -64,7 +74,7 @@ jobs:
         with:
           registry: docker.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.TOKEN_DOCKERHUB }}
+          password: ${{ steps.secrets.outputs.TOKEN_DOCKER }}
 
       # extract metadata and prepare tags
       - uses: docker/metadata-action@v5.6.1
@@ -98,4 +108,3 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           annotations: ${{ steps.meta.outputs.annotations }}
           labels: ${{ steps.meta.outputs.labels }}
-
