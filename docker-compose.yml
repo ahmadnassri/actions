@@ -1,7 +1,7 @@
 services:
   # ---- mega-linter ---- #
   lint:
-    image: oxsecurity/megalinter-ci_light:v7.4.0
+    image: oxsecurity/megalinter-ci_light:v8.2.0
     volumes:
       - ./:/tmp/lint
     environment:
@@ -11,7 +11,7 @@ services:
 
   # ---- readme generator ---- #
   readme:
-    image: pandoc/minimal:2.19
+    image: pandoc/minimal:3.6.0
     volumes:
       - ./:/data
     command: --defaults=.pandoc.yml
