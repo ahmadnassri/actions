@@ -1,0 +1,21 @@
+name: push-shell
+
+on: workflow_call
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+
+jobs:
+  metadata:
+    uses: ./.github/workflows/job-metadata.yml
+
+  lint-commits:
+    uses: ./.github/workflows/job-lint-commits.yml
+
+  lint-content:
+    uses: ./.github/workflows/job-lint-ci.yml
+
+    permissions:
+      contents: write
+      statuses: write
+      pull-requests: write
