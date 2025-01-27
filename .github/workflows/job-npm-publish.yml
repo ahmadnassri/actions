@@ -47,7 +47,7 @@ jobs:
           TOKEN_GITHUB: op://Tokens/GitHub/accounts/${{ github.repository_owner }}
           TOKEN_NPM: op://Tokens/NPM/accounts/${{ github.repository_owner }}
 
-      - uses: actions/setup-node@v4.1.0
+      - uses: actions/setup-node@v4.2.0
         with:
           node-version: latest
           registry-url: ${{ inputs.registry }}
