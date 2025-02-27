@@ -39,7 +39,7 @@ jobs:
           terraform_wrapper: false
           cli_config_credentials_token: ${{ steps.secrets.outputs.TOKEN_TERRAFORM }}
 
-      - uses: actions/cache@v4.2.1
+      - uses: actions/cache@v4.2.2
         with:
           key: terraform-cache-${{ hashFiles('.terraform.lock.hcl') }}
           path: .terraform
