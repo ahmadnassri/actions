@@ -61,7 +61,7 @@ jobs:
           TOKEN_DOCKER: op://Tokens/Docker/credential
 
       # login to github registry
-      - uses: docker/login-action@v3.3.0
+      - uses: docker/login-action@v3.4.0
         if: ${{ contains(fromJSON(inputs.registries), 'ghcr.io') }}
         with:
           registry: ghcr.io
@@ -69,7 +69,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # login to docker hub
-      - uses: docker/login-action@v3.3.0
+      - uses: docker/login-action@v3.4.0
         if: ${{ contains(fromJSON(inputs.registries), 'docker.io') }}
         with:
           registry: docker.io
