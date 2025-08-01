@@ -77,7 +77,7 @@ jobs:
           password: ${{ steps.secrets.outputs.TOKEN_DOCKER }}
 
       # extract metadata and prepare tags
-      - uses: docker/metadata-action@v5.7.0
+      - uses: docker/metadata-action@v5.8.0
         id: meta
         with:
           images: |
