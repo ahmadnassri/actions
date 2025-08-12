@@ -47,7 +47,7 @@ jobs:
       release-git-tag: ${{ steps.release.outputs.release-git-tag }}
 
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v5.0.0
 
       - id: package
         name: Check for package.json
