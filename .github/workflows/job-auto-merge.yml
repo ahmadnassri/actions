@@ -17,7 +17,7 @@ jobs:
     if: ${{ github.actor == 'dependabot[bot]' }}
 
     steps:
-      - uses: 1password/load-secrets-action@v2
+      - uses: 1password/load-secrets-action@v3
         id: secrets
         with:
           export-env: false
