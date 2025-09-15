@@ -42,6 +42,6 @@ jobs:
           fetch-depth: 0
 
       - id: main
-        uses: ahmadnassri/action-changed-files@v1.0.4
+        uses: ahmadnassri/action-changed-files@v1.2.0
         with:
           pathspec: ${{ inputs.pathspec }}
