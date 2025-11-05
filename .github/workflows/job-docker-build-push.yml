@@ -51,7 +51,7 @@ jobs:
       - uses: docker/setup-buildx-action@v3.11.1
 
       # optionally load secrets from 1password
-      - uses: 1password/load-secrets-action@v2
+      - uses: 1password/load-secrets-action@v3
         if: ${{ contains(fromJSON(inputs.registries), 'docker.io') }}
         id: secrets
         with:
