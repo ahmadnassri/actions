@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         with:
           script: |
             const tag = 'tags/${{ inputs.name }}'
