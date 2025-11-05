@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: docker/setup-qemu-action@v3.6.0
+      - uses: docker/setup-qemu-action@v3.7.0
       - uses: docker/setup-buildx-action@v3.11.1
 
       # optionally load secrets from 1password
