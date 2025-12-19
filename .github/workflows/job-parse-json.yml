@@ -23,7 +23,7 @@ jobs:
       json: ${{ steps.parser.outputs.json }}
 
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v6.0.1
 
       - id: parser
         run: echo "json=$(jq -c . < ${{ inputs.file }})" >> "$GITHUB_OUTPUT"

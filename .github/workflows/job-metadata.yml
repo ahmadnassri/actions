@@ -40,7 +40,7 @@ jobs:
       repository_default_branch: ${{ steps.metadata.outputs.repository_default_branch }}
 
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v6.0.1
 
       - id: metadata
         uses: ahmadnassri/action-metadata@v2.1.2
