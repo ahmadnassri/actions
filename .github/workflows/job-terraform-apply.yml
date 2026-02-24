@@ -30,7 +30,7 @@ jobs:
           TOKEN_CLOUDFLARE: op://Tokens/Cloudflare/accounts/${{ github.repository_owner }}
           TOKEN_TERRAFORM: op://Tokens/Terraform/accounts/${{ github.repository_owner }}
 
-      - uses: hashicorp/setup-terraform@v3.1.2
+      - uses: hashicorp/setup-terraform@v4.0.0
         with:
           cli_config_credentials_token: ${{ steps.secrets.outputs.TOKEN_TERRAFORM }}
 
