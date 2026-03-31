@@ -12,37 +12,3 @@ jobs:
     timeout-minutes: 5
 
     runs-on: ubuntu-24.04
-
-    # only run for dependabot PRs
-    if: ${{ github.actor == 'dependabot[bot]' }}
-
-    steps:
-      - uses: 1password/load-secrets-action@v2
-        id: secrets
-        with:
-          export-env: false
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
-          TOKEN_GITHUB: op://Tokens/GitHub/accounts/${{ github.repository_owner }}
-
-      - uses: dependabot/fetch-metadata@v2.5.0
-        id: dependabot
-        with:
-          github-token: ${{ steps.secrets.outputs.TOKEN_GITHUB }}
-
-      - name: auto merge conditions
-        id: auto-merge
-        if: |
-          contains('version-update:semver-minor,version-update:semver-patch', steps.dependabot.outputs.update-type) &&
-          contains('direct:development,indirect:development,direct:production,indirect:production', steps.dependabot.outputs.dependency-type)
-
-        run: echo "::notice ::auto-merge conditions satisfied"
-
-      - name: auto approve pr
-        if: ${{ steps.auto-merge.conclusion == 'success' }}
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ steps.secrets.outputs.TOKEN_GITHUB }}
-        run: |
-          gh pr review --approve "$PR_URL"
-          gh pr merge --auto --rebase "$PR_URL"
