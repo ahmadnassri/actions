@@ -22,7 +22,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TOKEN_1PASSWORD }}
           TOKEN_GITHUB: op://Tokens/GitHub/accounts/${{ github.repository_owner }}
 
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
