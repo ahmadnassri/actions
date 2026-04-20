@@ -35,7 +35,7 @@ jobs:
           cli_config_credentials_token: ${{ steps.secrets.outputs.TOKEN_TERRAFORM }}
 
       # cache terraform plugins
-      - uses: actions/cache@v4.3.0
+      - uses: actions/cache@v5.0.3
         id: terraform-cache
         with:
           key: terraform-cache-${{ hashFiles('.terraform.lock.hcl') }}
